@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .fieldError {
+        border-color: #bd2130;
+        color: #dc3545;
+    }
+    .alert {
+        height: 50px;
+        text-align: left;
+    }
+</style>
+<body>
+
+<div class="flex-container" style="margin-top: 50px; display: flex;">
+
+    <form style="width: 40%; margin: 3% auto;" action="/member/login" th:object="${loginDto}" method="post">
+
+        <div class="form-group">
+            <a href="/" style="display:inline-block; width: 100%; text-align: center; margin-bottom: 20px;">
+                <img src="https://cdn.pixabay.com/photo/2017/01/31/23/42/animal-2028258_960_720.png" alt="" width="100">
+            </a>
+            <h2 style="font-weight: 700; text-align: center;">Dong's Shop에 오신걸 환영합니다.</h2>
+        </div>
+
+        <div class="form-group">
+            <label th:for="loginId">아이디</label>
+            <input type="text" class="form-control" th:field="*{username}" placeholder="ID"
+                   th:class="${#fields.hasErrors('username')} ? 'form-control fieldError' : 'form-control'">
+            <span class="fieldError" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Incorrect date</span>
+            <br/>
+        </div>
+
+        <div class="form-group">
+            <label th:for="password">비밀번호</label>
+            <input type="password" class="form-control" th:field="*{password}" placeholder="Password"
+                   th:class="${#fields.hasErrors('password')} ? 'form-control fieldError' : 'form-control'">
+            <span class="fieldError" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Incorrect date</span>
+            <br/>
+        </div>
+
+        <div th:if="${error}" style="display: table">
+            <p style="display: table-cell; vertical-align: middle; width: 770px; height: 15px; padding-top: 7px; padding-bottom: 7px;" id="valid" class="alert alert-danger">
+                <a style="color: red;" th:text="${exception}"></a>
+            </p>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" style="width: 100%; font-weight: bold; font-size: 130%; margin-top: 10px;">로그인</button>
+            <h5 style="margin-top: 20px; text-align: center;">아직 회원이 아니신가요? <a href="/member/signUp">회원가입</a></h5>
+        </div>
+
+    </form>
+</div>
+</body>
+</html>

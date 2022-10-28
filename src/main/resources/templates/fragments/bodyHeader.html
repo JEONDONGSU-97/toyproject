@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extra/spring-security">
+<head th:replace="fragments/header :: header"></head>
+
+<style>
+        a:hover img {
+            transform: scale(1.4);
+            filter: brightness(0.5);
+        }
+
+        a {
+            font-size: 20px;
+        }
+
+        .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+        }
+
+        @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+        }
+
+        .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+        }
+
+        .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+        }
+
+        .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        }
+    </style>
+
+<div class="header fixed-top" th:fragment="bodyHeader">
+
+    <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-md-7 py-4">
+                    <h1 class="text-white"><b>Dong's Shop</b></h1>
+                    <p class="text-muted">
+                        <h4 class="text-white">저희 샵은 남성 전문 매장입니다. 항상 좋은 품질과 세련된 디자인이 장착된 품목들만 취급합니다.</h4>
+                    </p>
+                </div>
+                <div class="col-sm-4 offset-md-1 py-4">
+
+                    <h4 class="text-white"><span sec:authorize="isAuthenticated()" th:text="${#authentication.name}" class="text-white"></span><span sec:authorize="isAuthenticated()" class="text-white">님 반갑습니다.</span></h4>
+                    <h4 sec:authorize="isAnonymous()" class="text-white">반갑습니다.</h4>
+                    <ul class="list-unstyled">
+                        <a sec:authorize="hasRole('ADMIN')" th:href="@{/member/logout}" class="btn btn-secondary my-2">회원관리</a>
+                        <a sec:authorize="hasRole('ADMIN')" th:href="@{/member/logout}" class="btn btn-secondary my-2">상품관리</a>
+
+                        <a sec:authorize="isAnonymous()" th:href="@{/member/login}" class="btn btn-primary my-2">로그인</a>
+                        <a sec:authorize="isAnonymous()" th:href="@{/member/signUp}" class="btn btn-secondary my-2">회원가입</a>
+
+                        <a sec:authorize="hasRole('USER')" th:href="@{/myPage}" class="btn btn-secondary my-2">마이페이지</a>
+                        <a sec:authorize="hasRole('USER')" th:href="@{/myCart}" class="btn btn-secondary my-2">장바구니</a>
+                        <a sec:authorize="hasRole('USER')" th:href="@{/myOrder}" class="btn btn-secondary my-2">주문조회</a>
+                        <a sec:authorize="isAuthenticated()" th:href="@{/member/logout}" class="btn btn-danger my-2">로그아웃</a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <div class="navbar-brand d-flex align-items-center">
+                <a href="/" class="shop-logo"><img src="https://cdn.pixabay.com/photo/2017/01/31/23/42/animal-2028258_960_720.png" alt="..." width="60" height="50" style="margin-right: 12px;"></a>
+                <a th:href="@{/shop/outer}" style="margin-right: 12px;" class="text-white">Outer</a>
+                <a th:href="@{/shop/top}" style="margin-right: 12px;" class="text-white">Top</a>
+                <a th:href="@{/shop/bottoms}" style="margin-right: 12px;" class="text-white">Bottoms</a>
+                <a th:href="@{/shop/shoes}" style="margin-right: 12px;" class="text-white">Shoes</a>
+                <a th:href="@{/shop/sales}" style="margin-right: 12px;" class="text-white">Sales</a>
+            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </div>
+
+</div>

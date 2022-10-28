@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extra/spring-security">
+<head th:replace="fragments/header :: header">
+</head>
+
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+<h1 style="margin-top: 80px; text-align: center;">스니커즈</h1>
+
+<div class="album py-5 bg-light">
+    <div class="container" style="text-align: center;">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+
+            <div class="col" th:each="sneakers : ${items}">
+                <div class="card" >
+                    <a th:href="@{|/shop/shoes/order/${sneakers.name}|}"><img th:src="${sneakers.url}" class="card-img-top" alt="..." style="width: 300px; height: 400px;"></a>
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${sneakers.name}" style="font-weight: bold;"></h5>
+                        <span class="card-text" th:text="${sneakers.price}"></span>원
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

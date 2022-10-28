@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extra/spring-security">
+<head th:replace="fragments/header :: header">
+  <title>홈</title>
+
+  <link rel="canonical" href="https://getbootstrap.kr/docs/5.2/examples/carousel/">
+
+  <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+    </style>
+
+  <!-- Custom styles for this template -->
+  <link href="https://getbootstrap.kr/docs/5.2/examples/carousel/carousel.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+<main>
+
+  <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+
+      <div class="carousel-item active">
+        <img src="https://cdn.pixabay.com/photo/2019/09/07/08/21/architecture-4458205_960_720.jpg" alt="..." width="100%" height="900px">
+        <div class="container">
+          <div class="carousel-caption text-start">
+            <h1>넓고 쾌적한 <b>Dong's Shop</b> 쇼핑몰</h1>
+            <p>한가하고 여유로운 시간을 함께 보내세요.</p>
+            <p><a class="btn btn-lg btn-primary" href="#">VIEW MORE</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-item">
+        <img src="https://cdn.pixabay.com/photo/2015/08/25/11/50/shop-906722_960_720.jpg" alt="..." width="100%" height="900px">
+        <div class="container">
+          <div class="carousel-caption">
+            <h1>모든 종류의 옷이 한 곳에</h1>
+            <p>다양한 옷 쇼핑을 즐겨보세요.</p>
+            <p><a class="btn btn-lg btn-primary" href="#">VIEW MORE</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-item">
+        <img src="https://cdn.pixabay.com/photo/2014/08/26/21/48/sweatshirts-428607_960_720.jpg" alt="..." width="100%" height="900px">
+        <div class="container">
+          <div class="carousel-caption text-end">
+            <h1>2022 Dong's shop WINTER</h1>
+            <h5>SWEATER</h5>
+           <p>올 겨울 필수품, 스웨터</p>
+            <p><a class="btn btn-lg btn-primary" href="#">VIEW MORE</a></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+
+  <!-- Marketing messaging and featurettes
+  ================================================== -->
+  <!-- Wrap the rest of the page in another container to center all the content. -->
+
+  <div class="container marketing">
+
+    <!-- Three columns of text below the carousel -->
+    <h1 style="text-align: center; margin-top:50px;"><b>Hot 아이템!!!</b></h1>
+    <div class="row" style="text-align: center; margin-top: 100px; margin-bottom: 100px;">
+      <div class="col-lg-4" style="margin-top: 10px;">
+        <img src="http://www.modernif.co.kr/web/product/tiny/202203/7f4b305a4969aba2439e1c5fa4910a24.jpg" alt="" width="400" height="500">
+        <h2 class="fw-normal" style="margin-top: 20px;">리븐 트렌치 코트</h2>
+        <p>추위도 막아주면서 멋을 낼 수 있는 필수템</p>
+        <p><a class="btn btn-primary" th:href="@{/shop/outer/코트}">코트 보러가기 &raquo;</a></p>
+      </div><!-- /.col-lg-4 -->
+      <div class="col-lg-4" style="margin-top: 10px;">
+        <img src="http://www.modernif.co.kr/web/product/tiny/202210/8968124e7f9c64a7321b06ea076ce185.jpg" alt="" width="400" height="500">
+        <h2 class="fw-normal" style="margin-top: 20px;">울 라운드 니트</h2>
+        <p>울 함량이 많이 들어가 따뜻해서 겨울철 필수템</p>
+        <p><a class="btn btn-primary" th:href="@{/shop/top/니트}">니트 보러가기 &raquo;</a></p>
+      </div><!-- /.col-lg-4 -->
+      <div class="col-lg-4" style="margin-top: 10px;">
+        <img src="http://www.modernif.co.kr/web/product/tiny/202103/70116efd1a996f5b8ce3ac054f613bce.jpg" alt="" width="400" height="500">
+        <h2 class="fw-normal" style="margin-top: 20px;">리밋 투버튼 수트 세트</h2>
+        <p>젊고 트랜디한 패션 핫 아이템</p>
+        <p><a class="btn btn-primary" th:href="@{/shop/outer/수트}">수트 보러가기 &raquo;</a></p>
+      </div><!-- /.col-lg-4 -->
+    </div><!-- /.row -->
+
+
+    <!-- START THE FEATURETTES -->
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+      <div class="col-md-7">
+        <h2 class="featurette-heading fw-normal lh-1">추운 겨울, <span class="text-muted">구스다운 패딩</span>과 함께 보내세요.</h2>
+        <p class="lead">구스다운 패딩 뿐만 아니라 다양한 패딩 또, 아우터가 준비 되어있습니다.</p>
+      </div>
+      <div class="col-md-5">
+        <img src="https://cdn.pixabay.com/photo/2017/08/05/23/58/people-2586857_960_720.jpg" alt="..." width="100%" height="100%">
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+      <div class="col-md-7 order-md-2">
+        <h2 class="featurette-heading fw-normal lh-1">품격과 격식이 느껴지는 <span class="text-muted">셔츠</span></h2>
+        <p class="lead">신축성이 좋아 활동하기도 편하고 어디에서나 잘 어울립니다.</p>
+      </div>
+      <div class="col-md-5 order-md-1">
+        <img src="https://cdn.pixabay.com/photo/2018/05/15/15/00/man-3403180_960_720.jpg" alt="..." width="100%" height="100%">
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+      <div class="col-md-7">
+        <h2 class="featurette-heading fw-normal lh-1">남자의 세련되고 절제된 멋. <span class="text-muted">정장</span></h2>
+        <p class="lead">친환경 소재로 만든 정장 뿐만 여러가지 멋을 뽐낼 수 있는 옷들을 만나러 가보세요.</p>
+      </div>
+      <div class="col-md-5">
+        <img src="https://cdn.pixabay.com/photo/2017/11/02/14/26/men-2911330_960_720.jpg" alt="..." width="100%" height="100%">
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <!-- /END THE FEATURETTES -->
+
+  </div><!-- /.container -->
+
+</main>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
