@@ -13,11 +13,15 @@ public class ItemDto {
 
     private String name;
     private int price;
+
     //아이템 이미지를 불러오기 위함
     private String url;
-    private int stockQuantity;
+
     //orderPage에서 신발만 따로 사이즈 분류
     private String category;
+
+    private int stockQuantity;
+
 
     public ItemDto(Item item) {
         name = item.getName();

@@ -28,10 +28,10 @@ public class PayController {
     private final MemberRepository memberRepository;
 
     @GetMapping("/pay/{name}")
-    public String pay(ItemDto itemDto, @PathVariable String name, Model model) {
+    public String pay(@PathVariable String name, Model model) {
 
         Item item = itemRepository.findByName(name);
-        itemDto = new ItemDto(item);
+        ItemDto itemDto = new ItemDto(item);
 
         //사용자 정보 가져오기
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
