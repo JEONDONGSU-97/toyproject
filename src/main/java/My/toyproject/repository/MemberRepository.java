@@ -44,10 +44,10 @@ public class MemberRepository {
     }
 
     //로그인 아이디로 회원 조회
-    public List<Member> findByLoginId(String id) {
+    public Member findByLoginId(String id) {
         return em.createQuery("select m from Member m where m.loginId = :id", Member.class)
                 .setParameter("id", id)
-                .getResultList();
+                .getSingleResult();
     }
 
     //로그인시 회원 이름 추출

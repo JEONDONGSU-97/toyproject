@@ -3,6 +3,8 @@ package My.toyproject.controller;
 import My.toyproject.domain.Item;
 import My.toyproject.domain.Member;
 import My.toyproject.dto.ItemDto;
+import My.toyproject.dto.MemberDto;
+import My.toyproject.dto.OrderItemDto;
 import My.toyproject.repository.ItemRepository;
 import My.toyproject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,7 @@ public class PayController {
     private final MemberRepository memberRepository;
 
     @GetMapping("/pay/{name}")
-    public String pay(@PathVariable String name, Model model) {
+    public String pay(@PathVariable String name, OrderItemDto orderItemDto, Model model) {
 
         Item item = itemRepository.findByName(name);
         ItemDto itemDto = new ItemDto(item);
@@ -40,13 +42,11 @@ public class PayController {
         String loginID = ((UserDetails) principal).getUsername();
         String password = ((UserDetails) principal).getPassword();
 
-        List<Member> members = memberRepository.findByLoginId(loginID);
-        Member member = members.get(0);
+        Member member = memberRepository.findByLoginId(loginID);
 
         log.info("======================================================");
         log.info("이름 : {}", member.getName());
         log.info("아이디 : {}", member.getLoginId());
-        log.info("비밀번호 : {}", member.getPassword());
         log.info("상세 주소 : {}", member.getAddress().getDetail());
         log.info("도로명 주소 : {}", member.getAddress().getStreet());
         log.info("우편번호: {}", member.getAddress().getZipCode());
@@ -54,6 +54,7 @@ public class PayController {
         log.info("휴대폰번호 : {}", member.getMobile());
 
         model.addAttribute("item", itemDto);
-        return "/shop/payPage";
+        model.addAttribute("member", member);
+        return "/shop/payPage1";
     }
 }

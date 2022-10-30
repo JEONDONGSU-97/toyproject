@@ -129,87 +129,27 @@
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"/>
 
-<h2 class="mt-4">Two columns</h2>
-<h2 style="margin-top: 80px; text-align: center;"><strong>결제 페이지</strong></h2>
+<!-- 상품 이미지 출력 -->
+<div th:object="${item}">
+    <img th:src="*{url}" alt="...">
+</div>
 
-<div class="album py-5 bg-light">
-    <div class="container" style="text-align: center;">
-        <div class="row row-cols-1 row-cols-md-2 g-4">
+<div th:object="${member}">
+이름: <text th:text="*{name}"></text>
+상세 주소: <text th:text="*{address.detail}"></text>
+도로명 주소: <text th:text="*{address.street}"></text>
+우편번호: <text th:text="*{address.zipCode}"></text>
+이메일: <text th:text="*{email}"></text>
+휴대폰 번호: <text th:text="*{mobile}"></text>
+</div>
 
-            <div class="row mb-3 text-center" style="margin-top: 30px;">
-                <img th:src="${item.url}" alt="..." style="width: 400px; height: 400px;">
-            </div>
-
-            <div class="col">
-                <div class="card" style="text-align: left;">
-                    <span><strong><text style="font-size: 30px;" th:text="${item.name}"></text></strong></span>
-                    <span><strong><text style="font-size: 30px;" th:text="${item.price}"></text><text style="font-size: 30px;">원</text></strong></span>
-                    <br/>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text">수량</label>
-                            <input type="text" class="form-control" id="allCount" th:value="${}" readonly>
-                        </div>
-                    </div>
-
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text">사이즈</label>
-                            <input type="text" class="form-control" id="size" th:value="${}" readonly>
-                        </div>
-                    </div>
-
-                    <div class="input-group mb-3"  style="width: 200px;">
-                        <span class="input-group-text">합계</span>
-                        <input type="text" class="form-control" id="allPrice" th:value="${}" readonly>
-                    </div>
-
-                    <!-- Button trigger modal -->
-                    <span>재고: <text th:text="${item.stockQuantity}"></text>개</span>
-                    <button th:if="${item.stockQuantity ne 0}" data-bs-toggle="modal" data-bs-target="#exampleModal">주문하기</button>
-                    <button th:if="${item.stockQuantity ne 0}" data-bs-toggle="modal" data-bs-target="#exampleModal">장바구니 담기</button>
-                    <button th:if="${item.stockQuantity eq 0}" disabled>매진</button>
-
-                    <!-- Modal -->
-                    <div sec:authorize="isAnonymous()" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    비회원 입니다.
-                                    로그인 후 주문해주시기 바랍니다.
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                    <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/member/login}'|">로그인</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-    </div>
+<div th:object="${orderItemDto}">
+주문 상품명: <text th:text="*{name}"></text>
+주문 상품 가격: <text th:text="${item.price}"></text>
+주문 상품 수량: <text th:text="*{count}"></text>
+주문 상품 사이즈: <text th:text="*{size}"></text>
 </div>
 
 <div th:replace="fragments/footer :: footer"/>
 </body>
-<script th:inline="javascript">
-$(function(){
-    $("#inputGroupSelect01").on("change", function(){
-        let price = /*[[${item.price}]]*/;
-        let count = $("#inputGroupSelect01 option:selected").val();
-        let sum = price * count;
-
-        console.log(sum);
-
-        $("#allPrice").val(sum);
-    });
-});
-</script>
 </html>

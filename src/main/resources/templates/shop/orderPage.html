@@ -140,17 +140,27 @@
                 <img th:src="${item.url}" alt="..." style="width: 400px; height: 400px;">
             </div>
 
-            <form action="http://www.naver.com" method="post">
+            <form th:action="@{|/shop/pay/${item.name}|}" th:object="${item}">
             <div class="col">
                 <div class="card" style="text-align: left; height: 400px;">
-                    <span><strong><text style="font-size: 30px;" th:text="${item.name}"></text></strong></span>
-                    <span><strong><text style="font-size: 30px;" th:text="${item.price}"></text><text style="font-size: 30px;">원</text></strong></span>
+                    <span><strong><text style="font-size: 30px;" th:text="*{name}"></text></strong></span>
+                    <span><strong><text style="font-size: 30px;" th:text="*{price}"></text><text style="font-size: 30px;">원</text></strong></span>
                     <br/>
+<!--                    <div class="input-group mb-3">-->
+<!--                        <div class="input-group-prepend">-->
+<!--                            <label class="input-group-text" for="inputGroupSelect01" style="width: 74px;">수량</label>-->
+<!--                        </div>-->
+<!--                        <select id="inputGroupSelect01" th:disabled="${item.stockQuantity eq 0} ? 'disabled'" required>-->
+<!--                            <option value="">&#45;&#45; 수량을 선택하세요 &#45;&#45;</option>-->
+<!--                            <th:block th:each="num : ${#numbers.sequence(1, item.stockQuantity)}">-->
+<!--                                <option th:text="${num}" th:value="${num}"></option>-->
+<!--                            </th:block>-->
+<!--                        </select>-->
+<!--                    </div>-->
+
                     <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputGroupSelect01">수량</label>
-                        </div>
-                        <select id="inputGroupSelect01" th:disabled="${item.stockQuantity eq 0} ? 'disabled'" required>
+                        <label class="input-group-text" for="inputGroupSelect01">수량</label>
+                        <select class="form-select" id="inputGroupSelect01" name="count" th:disabled="*{stockQuantity} eq 0 ? 'disabled'" required>
                             <option value="">-- 수량을 선택하세요 --</option>
                             <th:block th:each="num : ${#numbers.sequence(1, item.stockQuantity)}">
                                 <option th:text="${num}" th:value="${num}"></option>
@@ -159,10 +169,8 @@
                     </div>
 
                     <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputGroupSelect03">사이즈</label>
-                        </div>
-                        <select id="inputGroupSelect03" th:disabled="${item.stockQuantity eq 0} ? 'disabled'" required>
+                        <label class="input-group-text" for="inputGroupSelect02">사이즈</label>
+                        <select class="form-select" id="inputGroupSelect02" name="size" th:disabled="${item.stockQuantity eq 0} ? 'disabled'" required>
                             <option value="">-- 사이즈를 선택하세요 --</option>
                             <!-- 신발일때와 아닐때 사이즈 나누기 -->
                             <option value="small" th:if="${item.category ne '신발'}">S</option>
@@ -179,19 +187,46 @@
                         </select>
                     </div>
 
-                    <div class="input-group mb-3"  style="width: 200px;">
-                        <span class="input-group-text">합계</span>
-                        <input type="text" class="form-control" id="allPrice" value="" readonly>
+<!--                    <div class="input-group mb-3">-->
+<!--                        <div class="input-group-prepend">-->
+<!--                            <label class="input-group-text" for="inputGroupSelect03">사이즈</label>-->
+<!--                        </div>-->
+<!--                        <select id="inputGroupSelect03" th:disabled="${item.stockQuantity eq 0} ? 'disabled'" required>-->
+<!--                            <option value="">&#45;&#45; 사이즈를 선택하세요 &#45;&#45;</option>-->
+<!--                            &lt;!&ndash; 신발일때와 아닐때 사이즈 나누기 &ndash;&gt;-->
+<!--                            <option value="small" th:if="${item.category ne '신발'}">S</option>-->
+<!--                            <option value="medium" th:if="${item.category ne '신발'}">M</option>-->
+<!--                            <option value="large" th:if="${item.category ne '신발'}">L</option>-->
+<!--                            <option value="large" th:if="${item.category ne '신발'}">XL</option>-->
+<!--                            <option value="large" th:if="${item.category ne '신발'}">XXL</option>-->
+<!--                            <option value="large" th:if="${item.category eq '신발'}">230</option>-->
+<!--                            <option value="large" th:if="${item.category eq '신발'}">240</option>-->
+<!--                            <option value="large" th:if="${item.category eq '신발'}">250</option>-->
+<!--                            <option value="large" th:if="${item.category eq '신발'}">260</option>-->
+<!--                            <option value="large" th:if="${item.category eq '신발'}">270</option>-->
+<!--                            <option value="large" th:if="${item.category eq '신발'}">280</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">합계</span>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="allPrice" value="" readonly>
                     </div>
 
-                    <!-- Button trigger modal -->
+<!--                    <div class="input-group mb-3"  style="width: 200px;">-->
+<!--                        <span class="input-group-text">합계</span>-->
+<!--                        <input type="text" class="form-control" id="allPrice" value="" readonly>-->
+<!--                    </div>-->
+
                     <span>수량: <text th:text="${item.stockQuantity}"></text>개</span>
                     <br/>
+
+                    <!-- Button trigger modal -->
                     <a th:onclick="#" class="btn btn-primary" sec:authorize="isAnonymous()" th:if="${item.stockQuantity ne 0}" data-bs-toggle="modal" data-bs-target="#exampleModal">BUY NOW(비회원)</a>
                     <a th:onclick="#" class="btn btn-primary" sec:authorize="isAnonymous()" th:if="${item.stockQuantity ne 0}" data-bs-toggle="modal" data-bs-target="#exampleModal">ADD CART(비회원)</a>
-                    <input type="submit" class="btn btn-primary" sec:authorize="hasRole('USER')" th:if="${item.stockQuantity ne 0}" style="margin-top: 15px;" value="BUY NOW(회원)">
+                    <input type="submit" class="btn btn-primary" sec:authorize="hasRole('USER')" th:if="${item.stockQuantity ne 0}" value="BUY NOW(회원)">
                     <input type="submit" class="btn btn-primary" sec:authorize="hasRole('USER')" th:if="${item.stockQuantity ne 0}" value="ADD CART(회원)">
-                    <button th:if="${item.stockQuantity eq 0}" disabled style="margin-top: 45px;">매진</button>
+                    <button class="btn btn-danger" th:if="${item.stockQuantity eq 0}" disabled style="margin-top: 36px;">OUT OF STOCK</button>
 
                     <!-- Modal -->
                     <div sec:authorize="isAnonymous()" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

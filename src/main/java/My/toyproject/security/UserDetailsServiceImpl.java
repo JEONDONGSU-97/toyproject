@@ -29,12 +29,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
 
-        List<Member> members = memberRepository.findByLoginId(loginId);
-        if (members.isEmpty()) {
+        Member member = memberRepository.findByLoginId(loginId);
+        if (member == null) {
             throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
         }
 
-        Member member = members.get(0);
         List<GrantedAuthority> authorities = new ArrayList<>();
         if (member.getRole().equals(Role.USER)) {
             authorities.add(new SimpleGrantedAuthority(Role.USER.getValue()));

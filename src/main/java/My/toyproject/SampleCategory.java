@@ -33,6 +33,7 @@ public class SampleCategory {
 
             Member member1 = createMember("고수", "user", "1234", "01011112222", "user@user.com", true, new Address("123", "서울 용산구 독서당로", "한남아파트"), Role.USER);
             Member member2 = createMember("원빈", "admin", "1234", "01022223333", "admin@admin.com", true, new Address("456", "경기 성남시 분당구 문정로", "분당아파트"), Role.ADMIN);
+            Member member3 = createMember("현빈", "test", "1234", "01033332222", "test@test.com", true, new Address("134", "부산 강서구 가락대로 ", "부산아파트"), Role.USER);
 
             /**
              * 카테고리(parent)
@@ -254,8 +255,8 @@ public class SampleCategory {
             Item suit1 = createItem("리밋 투버튼 수트 세트", 79900, 20, suit, suitImage1);
             Item suit2 = createItem("리밋 투버튼 와이드 세트", 80900, 10, suit, suitImage2);
             Item suit3 = createItem("랜드 3버튼 수트 셋업", 87000, 5, suit, suitImage3);
-            Item suit4 = createItem("로위 투버튼 수트", 67000, 0, suit, suitImage4);
-            Item suit5 = createItem("로이 투버튼 수트 세트", 79000, 20, suit, suitImage5);
+            Item suit4 = createItem("로위 투버튼 수트", 67000, 10, suit, suitImage4);
+            Item suit5 = createItem("로이 투버튼 수트 세트", 79000, 0, suit, suitImage5);
             Item suit6 = createItem("어텐 투버튼 와이드 세트", 85000, 30, suit, suitImage6);
             Item suit7 = createItem("로던 울 수트", 80000, 10, suit, suitImage7);
             Item suit8 = createItem("마일드 체크 수트", 75000, 5, suit, suitImage8);
