@@ -1,7 +1,10 @@
 package My.toyproject.dto;
 
 import My.toyproject.annotation.ValidEnum;
+import My.toyproject.domain.Member;
 import My.toyproject.domain.role.Role;
+import com.sun.javadoc.MemberDoc;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import javax.validation.constraints.Email;
@@ -45,5 +48,15 @@ public class MemberDto {
 
     @ValidEnum(enumClass = Role.class)
     private Role role;
+
+    @Builder
+    public MemberDto(String name, String email, String mobile, String zipCode, String street, String detail) {
+        this.name = name;
+        this.email = email;
+        this.mobile = mobile;
+        this.zipCode = zipCode;
+        this.street = street;
+        this.detail = detail;
+    }
 
 }

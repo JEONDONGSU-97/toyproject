@@ -68,49 +68,28 @@
 <div class="container">
     <main>
         <div class="py-5 text-center">
-            <h1>주문 조회</h1>
+            <h1>주문이 완료되었습니다.</h1>
         </div>
 
         <hr class="my-4">
 
         <div class="row g-5">
 
-<!--            <div style="margin-top: 50px; font-size:20px;">-->
-<!--                <b>주문자명: &nbsp;&nbsp;<text th:text="${member.name}"></text></b>-->
-<!--                <br>-->
-<!--                <b>주소: &nbsp;&nbsp;<text th:text="${member.street} + ${member.detail}"></text></b>-->
-<!--                <br>-->
-<!--                <b>상품명: &nbsp;&nbsp;<text th:text="${item.name}"></text></b>-->
-<!--                <br>-->
-<!--                <b>상품 수량: &nbsp;&nbsp;<text th:text="${orderItemDto.count}"></text></b>-->
-<!--                <br>-->
-<!--                <b> 상품 사이즈: &nbsp;&nbsp;<text th:text="${orderItemDto.size}"></text></b>-->
-<!--                <br>-->
-<!--                <b>합계: &nbsp;&nbsp;<text th:text="${item.price} * ${orderItemDto.count}"></text></b>-->
-<!--                <br><br>-->
-<!--                <a href="#" class="btn btn-primary">주문조회</a>-->
-<!--            </div>-->
-
-            <table border="5" class="table">
-                <tr>
-                    <th>이미지</th>
-                    <th>상품명</th>
-                    <th>가격</th>
-                    <th>수량</th>
-                    <th>사이즈</th>
-                    <th>배송상태</th>
-                </tr>
-                <tr>
-                    <td><img th:src="${item.url}" alt="${item.name}" width="200" height="200"></td>
-                    <td th:text="${orderItemDto.name}"></td>
-                    <td th:text="${item.price}"></td>
-                    <td th:text="${orderItemDto.count}"></td>
-                    <td th:text="${orderItemDto.size}"></td>
-                    <td>기본배송</td>
-                    <td>무료</td>
-                    <td th:text="${item.price} * ${orderItemDto.count}"></td>
-                </tr>
-            </table>
+            <div style="margin-top: 50px; font-size:20px;">
+                <b>주문자명: &nbsp;&nbsp;<text th:text="${member.name}"></text></b>
+                <br>
+                <b>주소: &nbsp;&nbsp;<text th:text="${member.street} + ${member.detail}"></text></b>
+                <br>
+                <b>상품명: &nbsp;&nbsp;<text th:text="${item.name}"></text></b>
+                <br>
+                <b>상품 수량: &nbsp;&nbsp;<text th:text="${orderItemDto.count}"></text></b>
+                <br>
+                <b> 상품 사이즈: &nbsp;&nbsp;<text th:text="${orderItemDto.size}"></text></b>
+                <br>
+                <b>합계: &nbsp;&nbsp;<text th:text="${item.price} * ${orderItemDto.count}"></text></b>
+                <br><br>
+                <a href="#" class="btn btn-primary">주문조회</a>
+            </div>
 
         </div>
     </main>

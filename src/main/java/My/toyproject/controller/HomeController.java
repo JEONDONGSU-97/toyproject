@@ -70,12 +70,12 @@ public class HomeController {
 
     @GetMapping("/myCart")
     public String myCart() {
-        return "myCart";
+        return "/shop/myCart";
     }
 
     @GetMapping("/myOrder")
     public String myOrder() {
-        return "myOrder";
+        return "/shop/myOrder";
     }
 
     @GetMapping("/order")

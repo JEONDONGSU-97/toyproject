@@ -2,154 +2,357 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extra/spring-security">
 <head th:replace="fragments/header :: header">
-    <meta charset="UTF-8">
-    <title>의류</title>
-    <link rel="canonical" href="https://getbootstrap.kr/docs/5.2/examples/grid/">
+    <link rel="canonical" href="https://getbootstrap.kr/docs/5.2/examples/checkout/">
 </head>
 <style>
-    .flex-container{
-        margin-top: 50px;
-        display: flex;
-    }
-    .card-img-top {
-        width: 286px;
-        height: 312px;
-    }
-    .inline-flex-container{
-        display: inline-flex;
-    }
-    .inline-flex-item {
-        width: 300px;
-        margin-top: 50px;
-        margin-right: 30px;
-        height: 500px;
-        text-align: center;
-    }
-    .flex-item{
-        width: 100%;
-        height: 800px;
-        margin: 10px;
-    }
-    #side-bar{
-        width: 400px;
-        height: 800px;
-        margin: 10px;
-    }
+        td {
+            vertical-align: middle;
+        }
 
-    body {
-      min-height: 100vh;
-      min-height: -webkit-fill-available;
-    }
+        table {
+            text-align: center;
+            margin: auto;
+        }
 
-    html {
-      height: -webkit-fill-available;
-    }
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
 
-    main {
-      display: flex;
-      flex-wrap: nowrap;
-      height: 100vh;
-      height: -webkit-fill-available;
-      max-height: 100vh;
-      overflow-x: auto;
-      overflow-y: hidden;
-    }
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
 
-    .b-example-divider {
-      flex-shrink: 0;
-      width: 1.5rem;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, .1);
-      border: solid rgba(0, 0, 0, .15);
-      border-width: 1px 0;
-      box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-    }
+        .b-example-divider {
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
 
-    .bi {
-      vertical-align: -.125em;
-      pointer-events: none;
-      fill: currentColor;
-    }
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
 
-    .dropdown-toggle { outline: 0; }
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
 
-    .nav-flush .nav-link {
-      border-radius: 0;
-    }
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
 
-    .btn-toggle {
-      display: inline-flex;
-      align-items: center;
-      padding: .25rem .5rem;
-      font-weight: 600;
-      color: rgba(0, 0, 0, .65);
-      background-color: transparent;
-      border: 0;
-    }
-    .btn-toggle:hover,
-    .btn-toggle:focus {
-      color: rgba(0, 0, 0, .85);
-      background-color: #d2f4ea;
-    }
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script>
 
-    .btn-toggle::before {
-      width: 1.25em;
-      line-height: 0;
-      content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
-      transition: transform .35s ease;
-      transform-origin: .5em 50%;
-    }
+    //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+    function sample4_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-    .btn-toggle[aria-expanded="true"] {
-      color: rgba(0, 0, 0, .85);
-    }
-    .btn-toggle[aria-expanded="true"]::before {
-      transform: rotate(90deg);
-    }
+                // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var roadAddr = data.roadAddress; // 도로명 주소 변수
+                var extraRoadAddr = ''; // 참고 항목 변수
 
-    .btn-toggle-nav a {
-      display: inline-flex;
-      padding: .1875rem .5rem;
-      margin-top: .125rem;
-      margin-left: 1.25rem;
-      text-decoration: none;
-    }
-    .btn-toggle-nav a:hover,
-    .btn-toggle-nav a:focus {
-      background-color: #d2f4ea;
-    }
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraRoadAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraRoadAddr !== ''){
+                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+                }
 
-    .scrollarea {
-      overflow-y: auto;
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('zipCode').value = data.zonecode;
+                document.getElementById("street").value = roadAddr;
+                document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+
+                document.getElementById("sample4_engAddress").value = data.addressEnglish;
+
+                // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+                if(roadAddr !== ''){
+                    document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+                } else {
+                    document.getElementById("sample4_extraAddress").value = '';
+                }
+
+                var guideTextBox = document.getElementById("guide");
+                // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+                if(data.autoRoadAddress) {
+                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                    guideTextBox.style.display = 'block';
+
+                } else if(data.autoJibunAddress) {
+                    var expJibunAddr = data.autoJibunAddress;
+                    guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+                    guideTextBox.style.display = 'block';
+                } else {
+                    guideTextBox.innerHTML = '';
+                    guideTextBox.style.display = 'none';
+                }
+            }
+        }).open();
     }
+</script>
+<!--<script src="form-validation.js"></script>-->
+<body class="bg-light">
+<!-- iamport.payment.js -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
 
-    .fw-semibold { font-weight: 600; }
-    .lh-tight { line-height: 1.25; }
-</style>
-<body>
-<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<div class="container">
+    <main>
+        <div class="py-5 text-center">
+            <h1>결제 페이지</h1>
+        </div>
 
-<!-- 상품 이미지 출력 -->
-<div th:object="${item}">
-    <img th:src="*{url}" alt="...">
+        <hr class="my-4">
+
+        <div class="row g-5">
+                <h2 class="mb-3">배송지 정보</h2>
+<!--                <form class="needs-validation" novalidate style="margin-top: -2px;">-->
+                    <div class="row g-3" th:object="${member}">
+                        <div class="col-12">
+                            <label th:for="*{name}" class="form-label">주문자 성함</label>
+                            <input type="text" class="form-control" th:field="*{name}" placeholder="" required>
+                            <div class="invalid-feedback">
+                                Valid first name is required.
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label th:for="*{mobile}" class="form-label">휴대폰 번호</label>
+                            <input type="text" class="form-control" th:field="*{mobile}" placeholder="" required>
+                            <div class="invalid-feedback">
+                                Valid first name is required.
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label th:for="*{email}" class="form-label">이메일</label>
+                            <input type="email" class="form-control" th:field="*{email}">
+                            <div class="invalid-feedback">
+                                Please enter a valid email address for shipping updates.
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label th:for="*{zipCode}" class="form-label">우편 번호</label>
+                            <input type="text" class="form-control" th:field="*{zipCode}" required>
+                            <div class="invalid-feedback">
+                                Please enter your shipping address.
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label th:for="*{street}" class="form-label">도로명 주소</label>
+                            <input type="text" class="form-control" th:field="*{street}" required>
+                            <div class="invalid-feedback">
+                                Please enter your shipping address.
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label th:for="*{detail}" class="form-label">상세 주소</label>
+                            <input type="text" class="form-control" th:field="*{detail}" required>
+                            <div class="invalid-feedback">
+                                Please enter your shipping address.
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <button type="button" class="btn btn-primary" onclick="sample4_execDaumPostcode()">우편번호 찾기</button>
+                        </div>
+
+                    </div>
+
+<!--                    <hr class="my-4">-->
+
+<!--                    <div class="form-check">-->
+<!--                        <input type="checkbox" class="form-check-input" id="same-address">-->
+<!--                        <label class="form-check-label" for="same-address">Shipping address is the same as my billing address</label>-->
+<!--                    </div>-->
+
+<!--                    <div class="form-check">-->
+<!--                        <input type="checkbox" class="form-check-input" id="save-info">-->
+<!--                        <label class="form-check-label" for="save-info">Save this information for next time</label>-->
+<!--                    </div>-->
+
+                    <hr class="my-4">
+
+                    <h2 style="margin-bottom: 30px;">주문 상품</h2>
+
+                    <table border="5" class="table">
+                        <tr>
+                            <th>이미지</th>
+                            <th>상품명</th>
+                            <th>가격</th>
+                            <th>수량</th>
+                            <th>사이즈</th>
+                            <th>배송구분</th>
+                            <th>배송비</th>
+                            <th>합계</th>
+                        </tr>
+                        <tr>
+                            <td><img th:src="${item.url}" alt="${item.name}" width="200" height="200"></td>
+                            <td th:text="${orderItemDto.name}"></td>
+                            <td th:text="${item.price}"></td>
+                            <td th:text="${orderItemDto.count}"></td>
+                            <td th:text="${orderItemDto.size}"></td>
+                            <td>기본배송</td>
+                            <td>무료</td>
+                            <td th:text="${item.price} * ${orderItemDto.count}"></td>
+                        </tr>
+                    </table>
+
+<!--                    <hr class="my-4">-->
+
+<!--                    <h2 class="mb-3">결제 수단</h2>-->
+
+                    <div class="my-3">
+                        <div class="form-check">
+                            <input id="payments1" name="paymentMethod" type="radio" class="form-check-input" checked required>
+                            <label class="form-check-label" for="payments1">카드 결제</label>
+                        </div>
+                        <div class="form-check">
+                            <input id="payments2" name="paymentMethod" type="radio" class="form-check-input" required>
+                            <label class="form-check-label" for="payments2">무통장 입금</label>
+                        </div>
+                        <div class="form-check">
+                            <input id="payments3" name="paymentMethod" type="radio" class="form-check-input" required>
+                            <label class="form-check-label" for="payments3">카카오 페이</label>
+                        </div>
+                        <div class="form-check">
+                            <input id="payments4" name="paymentMethod" type="radio" class="form-check-input" required>
+                            <label class="form-check-label" for="payments4">핸드폰 결제</label>
+                        </div>
+                    </div>
+
+<!--                    <div class="row gy-3">-->
+<!--                        <div class="col-md-6">-->
+<!--                            <label for="cc-name" class="form-label">입금자명</label>-->
+<!--                            <input type="text" class="form-control" id="cc-name" placeholder="" required>-->
+<!--                            <div class="invalid-feedback">-->
+<!--                                Name on card is required-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        <div class="col-md-6">-->
+<!--                            <label for="cc-number" class="form-label">입금은행</label>-->
+<!--                            <input type="text" class="form-control" id="cc-number" placeholder="" required>-->
+<!--                            <div class="invalid-feedback">-->
+<!--                                Credit card number is required-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        <h4 for="cc-number">현금영수증 발행 여부</h4>-->
+
+<!--                        <div class="my-3">-->
+<!--                            <div class="form-check">-->
+<!--                                <input id="cashBill1" name="paymentMethod" type="radio" class="form-check-input" checked required>-->
+<!--                                <label class="form-check-label" for="cashBill1">개인</label>-->
+<!--                            </div>-->
+<!--                            <div class="form-check">-->
+<!--                                <input id="cashBill2" name="paymentMethod" type="radio" class="form-check-input" required>-->
+<!--                                <label for="cashBill2">사업자</label>-->
+<!--                            </div>-->
+<!--                            <div class="form-check">-->
+<!--                                <input id="cashBill3" name="paymentMethod" type="radio" class="form-check-input" required>-->
+<!--                                <label class="form-check-label" for="cashBill3">신청 안함</label>-->
+<!--                            </div>-->
+
+<!--                            <br/>-->
+<!--                            <label for="cc-expiration" class="form-label">휴대폰 번호</label>-->
+<!--                            <input type="text" class="form-control" id="cc-expiration" placeholder="" required>-->
+<!--                            <div class="invalid-feedback">-->
+<!--                                Expiration date required-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                    </div>-->
+
+                    <hr class="my-4">
+
+                    <button id="paymentButton" class="w-100 btn btn-primary btn-lg" onclick="requestPay()">결제</button>
+<!--                </form>-->
+        </div>
+    </main>
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2017–2022 Dong's Shop</p>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="/">홈으로</a></li>
+        </ul>
+    </footer>
 </div>
+<script th:inline="javascript">
 
-<div th:object="${member}">
-이름: <text th:text="*{name}"></text>
-상세 주소: <text th:text="*{address.detail}"></text>
-도로명 주소: <text th:text="*{address.street}"></text>
-우편번호: <text th:text="*{address.zipCode}"></text>
-이메일: <text th:text="*{email}"></text>
-휴대폰 번호: <text th:text="*{mobile}"></text>
-</div>
+    let IMP = window.IMP;
+    IMP.init('imp40078137');
 
-<div th:object="${orderItemDto}">
-주문 상품명: <text th:text="*{name}"></text>
-주문 상품 가격: <text th:text="${item.price}"></text>
-주문 상품 수량: <text th:text="*{count}"></text>
-주문 상품 사이즈: <text th:text="*{size}"></text>
-</div>
+    function requestPay() {
+      IMP.request_pay({
+          pg: "kakaopay",
+          pay_method: "card",
+          merchant_uid: "merchant_" + new Date().getTime(),   //주문번호
+          name: /*[[${item.name}]]*/,
+          amount: /*[[${item.price} * ${orderItemDto.count}]]*/,
+          buyer_email: /*[[${member.email}]]*/,
+          buyer_name: /*[[${member.name}]]*/,
+          buyer_tel: /*[[${member.mobile}]]*/,
+          buyer_addr: /*[[${member.street} + ${member.detail}]]*/,
+          buyer_postcode: "01181",
+      }, function (rsp) { // callback
+          if (rsp.success) {
+<!--            $.ajax({-->
+<!--                url: "/shop/pay/success",-->
+<!--                data: {-->
+<!--                        orderNum: "merchant_" + new Date().getTime(),-->
+<!--                        orderItem: /*[[${item.name}]]*/,-->
+<!--                        orderItemUrl: /*[[${item.url}]]*/,-->
+<!--                        orderItemPrice: /*[[${item.price}]]*/-->
+<!--                },-->
+<!--                method: "GET"-->
+<!--            });-->
+            console.log(rsp);
+            window.location.href = 'http://localhost:8080/shop/pay/success/[[${member.name}]]/[[${item.name}]]/[[${orderItemDto.count}]]/[[${orderItemDto.size}]]'
+          } else {
+            console.log(rsp);
+          }
+      });
+    }
 
-<div th:replace="fragments/footer :: footer"/>
+</script>
 </body>
 </html>

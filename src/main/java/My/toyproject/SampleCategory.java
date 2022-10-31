@@ -31,9 +31,9 @@ public class SampleCategory {
 
         public void InitDB() {
 
-            Member member1 = createMember("고수", "user", "1234", "01011112222", "user@user.com", true, new Address("123", "서울 용산구 독서당로", "한남아파트"), Role.USER);
-            Member member2 = createMember("원빈", "admin", "1234", "01022223333", "admin@admin.com", true, new Address("456", "경기 성남시 분당구 문정로", "분당아파트"), Role.ADMIN);
-            Member member3 = createMember("현빈", "test", "1234", "01033332222", "test@test.com", true, new Address("134", "부산 강서구 가락대로 ", "부산아파트"), Role.USER);
+            Member member1 = createMember("고수", "user", "1234", "01011112222", "user@user.com", true, new Address("123", "서울 용산구 독서당로", "한남아파트 1003동 1004호"), Role.USER);
+            Member member2 = createMember("원빈", "admin", "1234", "01022223333", "admin@admin.com", true, new Address("456", "경기 성남시 분당구 문정로", "분당아파트 1002동 1050호"), Role.ADMIN);
+            Member member3 = createMember("현빈", "test", "1234", "01033332222", "test@test.com", true, new Address("134", "부산 강서구 가락대로 ", "부산아파트 108동 1200호"), Role.USER);
 
             /**
              * 카테고리(parent)
