@@ -61,7 +61,8 @@ public class MemberController {
         .role(memberDto.getRole())
         .build();
 
-        memberRepository.save(member);
+//        memberRepository.save(member);
+        memberService.join(member);
 
         return "redirect:/";
     }

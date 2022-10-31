@@ -33,8 +33,7 @@ class OrderServiceImplTest {
 
     @Autowired OrderServiceImpl orderServiceImpl;
     @Autowired OrderRepository orderRepository;
-    @Autowired
-    MemberRepository userRepository;
+    @Autowired MemberRepository memberRepository;
     @Autowired ItemRepository itemRepository;
 
     @Test
@@ -97,7 +96,7 @@ class OrderServiceImplTest {
                 .address(new Address("1234", "서울 용산구 독서당로 6", "xx아파트 xx동 xx호"))
                 .build();
 
-        userRepository.save(user);
+        memberRepository.save(user);
 
         //when
 
@@ -120,7 +119,7 @@ class OrderServiceImplTest {
                 .mobile(mobile)
                 .address(address)
                 .build();
-        userRepository.save(user);
+        memberRepository.save(user);
         return user;
     }
 }

@@ -2,6 +2,7 @@ package My.toyproject.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 
@@ -10,6 +11,7 @@ import static javax.persistence.FetchType.*;
 @Entity
 @Table(name = "order_item")
 @Getter @Setter
+@Slf4j
 public class OrderItem {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +43,8 @@ public class OrderItem {
 
         //주문한 상품 갯수 만큼 재고에서 줄이기
         item.removeStock(count);
+
+        log.info("아이템 수량 = {}", item.getStockQuantity());
         return orderItem;
     }
 

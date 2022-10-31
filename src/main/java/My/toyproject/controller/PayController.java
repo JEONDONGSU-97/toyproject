@@ -1,20 +1,20 @@
 package My.toyproject.controller;
 
-import My.toyproject.domain.Delivery;
-import My.toyproject.domain.Item;
-import My.toyproject.domain.Member;
-import My.toyproject.domain.OrderItem;
+import My.toyproject.domain.*;
 import My.toyproject.domain.status.DeliveryStatus;
 import My.toyproject.dto.ItemDto;
 import My.toyproject.dto.MemberDto;
 import My.toyproject.dto.OrderItemDto;
 import My.toyproject.repository.ItemRepository;
 import My.toyproject.repository.MemberRepository;
+import My.toyproject.repository.OrderRepository;
+import My.toyproject.serviceImpl.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,16 +22,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/shop")
 @Slf4j
+@Transactional
 public class PayController {
 
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
+    private final OrderServiceImpl orderService;
+    private final OrderRepository orderRepository;
 
     @GetMapping("/pay/{name}")
     public String pay(@PathVariable String name, OrderItemDto orderItemDto, Model model) {
@@ -69,7 +73,7 @@ public class PayController {
         return "/shop/payPage";
     }
 
-//    @GetMapping("/pay/success/{orderNum}/{orderItem}/{orderItemUrl}/{orderItemPrice}")
+    //    @GetMapping("/pay/success/{orderNum}/{orderItem}/{orderItemUrl}/{orderItemPrice}")
     @GetMapping("/pay/success/" + '"' + "{memberName}" + '"' + '/' + '"' + "{name}" + '"' + "/{count}" + '/' + '"' + "{size}" + '"')
     public String paySuccess(@PathVariable String memberName, @PathVariable String name, @PathVariable int count, @PathVariable String size, Model model) {
 
@@ -90,9 +94,13 @@ public class PayController {
         orderItemDto.setCount(count);
         orderItemDto.setSize(size);
 
-        model.addAttribute("member", memberDto);
+        //주문 로직
+        Long orderId = orderService.singleOrder(member.getId(), item.getId(), count);
+        Order order = orderRepository.findById(orderId);
+
+        model.addAttribute("member", order.getMember());
         model.addAttribute("orderItemDto", orderItemDto);
-        model.addAttribute("item", itemDto);
+        model.addAttribute("item", order.getOrderItems().get(0));
         model.addAttribute("delivery", delivery);
 
         log.info("====================================================================================");

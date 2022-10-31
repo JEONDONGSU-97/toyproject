@@ -58,6 +58,34 @@ public class OrderServiceImpl implements OrderService {
         return order.getId();
     }
 
+    public Long singleOrder(Long memberId, Long itemId, int count) {
+
+        //회원 조회
+        Member member = memberRepository.findById(memberId);
+
+        //상품 조회
+        List<OrderItem> orderItems = new ArrayList<>();
+
+        Item findItem = itemRepository.findById(itemId);
+
+        //주문 상품 생성
+        OrderItem orderItem = OrderItem.createOrderItem(findItem, findItem.getPrice(), count);
+
+        //배송 정보 생성
+        Delivery delivery = new Delivery();
+        delivery.setStatus(DeliveryStatus.READY);
+        delivery.setAddress(member.getAddress());
+
+        //주문 생성
+        Order order = Order.singleCreateOrder(member, delivery, orderItem);
+        order.setTotalPrice(findItem.getPrice() * count);
+
+        //주문 저장
+        orderRepository.save(order);
+
+        return order.getId();
+    }
+
     @Override
     public void cancel(Long orderId) {
         //주문 조회

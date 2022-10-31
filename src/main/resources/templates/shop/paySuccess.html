@@ -78,13 +78,13 @@
             <div style="margin-top: 50px; font-size:20px;">
                 <b>주문자명: &nbsp;&nbsp;<text th:text="${member.name}"></text></b>
                 <br>
-                <b>주소: &nbsp;&nbsp;<text th:text="${member.street} + ${member.detail}"></text></b>
+                <b>주소: &nbsp;&nbsp;<text th:text="${member.address.street} + ${member.address.detail}"></text></b>
                 <br>
                 <b>상품명: &nbsp;&nbsp;<text th:text="${item.name}"></text></b>
                 <br>
                 <b>상품 수량: &nbsp;&nbsp;<text th:text="${orderItemDto.count}"></text></b>
                 <br>
-                <b> 상품 사이즈: &nbsp;&nbsp;<text th:text="${orderItemDto.size}"></text></b>
+                <b>상품 사이즈: &nbsp;&nbsp;<text th:text="${orderItemDto.size}"></text></b>
                 <br>
                 <b>합계: &nbsp;&nbsp;<text th:text="${item.price} * ${orderItemDto.count}"></text></b>
                 <br><br>

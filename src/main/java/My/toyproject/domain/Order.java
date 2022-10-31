@@ -73,6 +73,16 @@ public class Order {
         return order;
     }
 
+    public static Order singleCreateOrder(Member member, Delivery delivery, OrderItem orderItem) {
+        Order order = new Order();
+        order.setMember(member); //연관관계 메서드
+        order.setDelivery(delivery); //연관관계 메서드
+        order.setOrderItem(orderItem); //연관관계 메서드
+        order.setOrderStatus(OrderStatus.READY);
+        order.setOrderDate(LocalDateTime.now());
+        return order;
+    }
+
     //주문 취소
     public void cancelOrder() {
         if (delivery.getStatus() == DeliveryStatus.COMPLETE) {

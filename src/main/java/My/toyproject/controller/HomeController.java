@@ -1,9 +1,12 @@
 package My.toyproject.controller;
 
+import My.toyproject.domain.Delivery;
 import My.toyproject.domain.Item;
-import My.toyproject.domain.ItemImage;
 import My.toyproject.domain.Member;
+import My.toyproject.domain.status.DeliveryStatus;
 import My.toyproject.dto.ItemDto;
+import My.toyproject.dto.MemberDto;
+import My.toyproject.dto.OrderItemDto;
 import My.toyproject.repository.ItemRepository;
 import My.toyproject.repository.MemberRepository;
 import My.toyproject.security.SecurityUser;
@@ -12,15 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.util.UriUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -73,8 +72,32 @@ public class HomeController {
         return "/shop/myCart";
     }
 
-    @GetMapping("/myOrder")
-    public String myOrder() {
+    @GetMapping("/myOrder/{memberName}/{name}/{count}/{size}/{status}")
+    public String myOrder(@PathVariable String memberName,
+                          @PathVariable String name,
+                          @PathVariable int count,
+                          @PathVariable String size,
+                          @PathVariable DeliveryStatus status, Model model) {
+
+        Item item = itemRepository.findByName(name);
+        ItemDto itemDto = new ItemDto(item);
+
+        Member member = memberRepository.findByName(memberName);
+        MemberDto memberDto = MemberDto.builder()
+                .name(member.getName())
+                .build();
+
+        OrderItemDto orderItemDto = new OrderItemDto();
+        orderItemDto.setCount(count);
+        orderItemDto.setSize(size);
+
+        Delivery delivery = new Delivery();
+        delivery.setStatus(status);
+
+        model.addAttribute("item", itemDto);
+        model.addAttribute("member", memberDto);
+        model.addAttribute("orderItemDto", orderItemDto);
+        model.addAttribute("delivery", delivery);
         return "/shop/myOrder";
     }
 

@@ -15,29 +15,29 @@ import org.springframework.transaction.annotation.Transactional;
 public class TestUserRepository {
 
     @Autowired
-    private UserRepository memberRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
     private MemberRepository userRepository;
 
-    @Test
-    public void 사용자_등록() {
-        Member user = Member.builder()
-                .loginId("user")
-                .password("1234")
-                .name("회원")
-                .role(Role.ROLE_USER)
-                .build();
-//        userRepository.save(user);
-        memberRepository.save(user);
-
-        Member admin = Member.builder()
-                .loginId("admin")
-                .password("1234")
-                .name("어드민")
-                .role(Role.ROLE_ADMIN)
-                .build();
-//        userRepository.save(admin);
-        memberRepository.save(admin);
-    }
+//    @Test
+//    public void 사용자_등록() {
+//        Member user = Member.builder()
+//                .loginId("user")
+//                .password("1234")
+//                .name("회원")
+//                .role(Role.ROLE_USER)
+//                .build();
+////        userRepository.save(user);
+//        memberRepository.save(user);
+//
+//        Member admin = Member.builder()
+//                .loginId("admin")
+//                .password("1234")
+//                .name("어드민")
+//                .role(Role.ROLE_ADMIN)
+//                .build();
+////        userRepository.save(admin);
+//        memberRepository.save(admin);
+//    }
 }
