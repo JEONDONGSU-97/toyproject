@@ -6,6 +6,7 @@ import My.toyproject.domain.status.OrderStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 

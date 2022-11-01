@@ -99,8 +99,12 @@
                         <td th:text="${orderItem.deliveryStatus}"></td>
                         <td th:text="${orderItem.orderStatus}"></td>
                         <td th:text="${orderItem.totalPrice}"></td>
-                        <td th:if="${(orderItem.orderStatus) == T(My.toyproject.domain.status.OrderStatus).READY}"><a th:href="@{|/order/${member.loginId}/${orderItem.orderId}|}" class="btn btn-danger">주문취소</a></td>
-                        <td th:if="${(orderItem.orderStatus) == T(My.toyproject.domain.status.OrderStatus).CANCEL}"><button th:href="@{|/order/${member.loginId}/${orderItem.orderId}|}" class="btn btn-danger" disabled>취소된 상품</button></td>
+                        <td th:if="${orderItem.orderStatus == T(My.toyproject.domain.status.OrderStatus).READY}">
+                            <a th:href="@{|/order/${member.loginId}/${orderItem.orderId}|}" class="btn btn-danger">주문취소</a>
+                        </td>
+                        <td th:if="${orderItem.orderStatus == T(My.toyproject.domain.status.OrderStatus).CANCEL}">
+                            <button th:href="@{|/order/${member.loginId}/${orderItem.orderId}|}" class="btn btn-danger" disabled>취소된 상품</button>
+                        </td>
                     </tr>
                 </th:block>
             </table>
@@ -115,6 +119,8 @@
         </ul>
     </footer>
 </div>
+<script th:inline="javascript">
 
+</script>
 </body>
 </html>

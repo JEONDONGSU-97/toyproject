@@ -4,6 +4,8 @@ import My.toyproject.exception.OutOfStockException;
 import My.toyproject.exception.OverStockException;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 
@@ -15,6 +17,7 @@ import static javax.persistence.FetchType.*;
 
 @Entity
 @Getter @Setter
+@Slf4j
 public class Item {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,8 +61,10 @@ public class Item {
 
     //재고 채우기 (관리자만 가능)
     public void addStock(int quantity) {
-        int addedStock = this.stockQuantity + quantity;
-        if (addedStock > 500) {
+        log.info("======================재고 원상복구===========================");
+        this.stockQuantity += quantity;
+        log.info("기존 수량 + 취소된 상품 수량 = {}, 주문 취소된 상품 수량 = {}", this.stockQuantity, quantity);
+        if (stockQuantity > 500) {
             throw new OverStockException("Over stock");
         }
     }

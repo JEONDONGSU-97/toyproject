@@ -5,6 +5,8 @@ import My.toyproject.domain.status.OrderStatus;
 import My.toyproject.exception.CancelOrderException;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,6 +19,7 @@ import static javax.persistence.FetchType.*;
 @Entity
 @Table(name = "orders")
 @Getter @Setter
+@Slf4j
 public class Order {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -92,8 +95,11 @@ public class Order {
         this.setOrderStatus(OrderStatus.CANCEL);
         this.getDelivery().setStatus(DeliveryStatus.CANCEL);
 
+        log.info("============================주문 취소 됨==================================");
+
         for (OrderItem orderItem : orderItems) {
             orderItem.cancel();
+            log.info("=======================주문 상품 취소 로직 실행=========================");
         }
     }
 

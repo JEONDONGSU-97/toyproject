@@ -111,6 +111,10 @@ public class HomeController {
             orderItemList.add(orderItemDto);
         }
 
+        //회원 주문 아이템 주문 상태 조회
+
+
+
         model.addAttribute("member", member);
         model.addAttribute("orderList", orderList);
         model.addAttribute("orderItemList", orderItemList);
@@ -130,7 +134,7 @@ public class HomeController {
             order.cancelOrder();
         }
 //        return "redirect://localhost:8080/myOrder/{loginId}";
-        return "redirect:/";
+        return "redirect:/myOrder/{loginId}";
     }
 
     @GetMapping("/order")

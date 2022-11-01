@@ -3,6 +3,7 @@ package My.toyproject.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 
@@ -54,7 +55,9 @@ public class OrderItem {
 
     //주문 상품 취소
     public void cancel() {
+        log.info("취소된 상품 수량 = {}", count);
         getItem().addStock(count);
+        log.info("===========================주문 상품 취소 됨=======================================");
     }
 
     //주문 상품 가격 조회
