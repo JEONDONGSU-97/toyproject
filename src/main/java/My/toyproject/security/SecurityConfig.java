@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -41,6 +42,14 @@ public class SecurityConfig {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
                 .logoutSuccessUrl("/") //로그아웃 성공시 리다이렉트 주소
                 .invalidateHttpSession(true); //로그아웃 성공시 세션 삭제
+//        http.sessionManagement()
+//                .maximumSessions(1)
+//                .maxSessionsPreventsLogin(true)
+//                .and().invalidSessionUrl("/");
+//        http.sessionManagement().sessionFixation().changeSessionId();
+//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+
+
         return http.build();
     }
 

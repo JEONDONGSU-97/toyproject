@@ -9,13 +9,16 @@ import My.toyproject.repository.*;
 import My.toyproject.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLDecoder;
@@ -60,6 +63,12 @@ public class HomeController {
 
     @GetMapping("/")
     public String homeLoginSession(@AuthenticationPrincipal SecurityUser principal, HttpServletRequest request, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("============================================로그인 후 홈화면=======================================================");
+        log.info(authentication.getName(), authentication.getPrincipal(), authentication.getCredentials(), authentication.getDetails());
+        log.info("sessionId = {}", RequestContextHolder.currentRequestAttributes().getSessionId());
+        log.info("============================================로그인 후 홈화면=======================================================");
+
         return "home";
     }
 
