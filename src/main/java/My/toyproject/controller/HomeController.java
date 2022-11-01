@@ -1,19 +1,17 @@
 package My.toyproject.controller;
 
-import My.toyproject.domain.Delivery;
-import My.toyproject.domain.Item;
-import My.toyproject.domain.Member;
+import My.toyproject.domain.*;
 import My.toyproject.domain.status.DeliveryStatus;
 import My.toyproject.dto.ItemDto;
 import My.toyproject.dto.MemberDto;
 import My.toyproject.dto.OrderItemDto;
-import My.toyproject.repository.ItemRepository;
-import My.toyproject.repository.MemberRepository;
+import My.toyproject.repository.*;
 import My.toyproject.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,16 +20,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class HomeController {
 
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
+
+    //회원 주문 조회
+    private final OrderRepository orderRepository;
+    //회원 주문 아이템 조회
+    private final OrderItemRepository orderItemRepository;
+    //회원 주문 아이템 배송 상태 조회
+    private final DeliveryRepository deliveryRepository;
 
     @GetMapping("/practice")
     public String practice(Model model) {
@@ -72,33 +79,58 @@ public class HomeController {
         return "/shop/myCart";
     }
 
-    @GetMapping("/myOrder/{memberName}/{name}/{count}/{size}/{status}")
-    public String myOrder(@PathVariable String memberName,
-                          @PathVariable String name,
-                          @PathVariable int count,
-                          @PathVariable String size,
-                          @PathVariable DeliveryStatus status, Model model) {
+    //주문로직
+    @GetMapping("/myOrder/{loginId}")
+    public String myOrder(@PathVariable String loginId, Model model) {
 
-        Item item = itemRepository.findByName(name);
-        ItemDto itemDto = new ItemDto(item);
+        Member member = memberRepository.findByLoginId(loginId);
+        Long memberId = member.getId();
 
-        Member member = memberRepository.findByName(memberName);
-        MemberDto memberDto = MemberDto.builder()
-                .name(member.getName())
-                .build();
+        //회원 주문 조회
+        List<Order> orderList = orderRepository.findByMemberId(memberId);
+        List<Long> orderIdList = new ArrayList<>();
 
-        OrderItemDto orderItemDto = new OrderItemDto();
-        orderItemDto.setCount(count);
-        orderItemDto.setSize(size);
+        //회원 주문 아이템 조회
+        List<OrderItemDto> orderItemList = new ArrayList<>();
+        for (Order order : orderList) {
+            OrderItem orderItem = orderItemRepository.findById(order.getId());
+            Delivery delivery = deliveryRepository.findById(order.getDelivery().getId());
 
-        Delivery delivery = new Delivery();
-        delivery.setStatus(status);
+            OrderItemDto orderItemDto = OrderItemDto.builder()
+                    .orderId(order.getId())
+                    .orderDate(order.getOrderDate())
+                    .orderStatus(order.getOrderStatus())
+                    .totalPrice(order.getTotalPrice())
+                    .name(orderItem.getName())
+                    .price(orderItem.getPrice())
+                    .count(orderItem.getCount())
+                    .size(orderItem.getSize())
+                    .url(orderItem.getItem().getImage().getUrl())
+                    .deliveryStatus(delivery.getStatus())
+                    .build();
+            orderItemList.add(orderItemDto);
+        }
 
-        model.addAttribute("item", itemDto);
-        model.addAttribute("member", memberDto);
-        model.addAttribute("orderItemDto", orderItemDto);
-        model.addAttribute("delivery", delivery);
+        model.addAttribute("member", member);
+        model.addAttribute("orderList", orderList);
+        model.addAttribute("orderItemList", orderItemList);
         return "/shop/myOrder";
+    }
+
+    //주문취소 로직
+    @GetMapping("/order/{loginId}/{orderId}")
+    public String orderCancel(@PathVariable String loginId, @PathVariable Long orderId) {
+        Member member = memberRepository.findByLoginId(loginId);
+        log.info("주문번호 = {}", orderId);
+        Order order = orderRepository.findById(orderId);
+
+        Long orderMemberId = order.getMember().getId();
+
+        if (member.getId() == orderMemberId) {
+            order.cancelOrder();
+        }
+//        return "redirect://localhost:8080/myOrder/{loginId}";
+        return "redirect:/";
     }
 
     @GetMapping("/order")

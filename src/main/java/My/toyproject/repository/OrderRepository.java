@@ -24,19 +24,19 @@ public class OrderRepository {
     }
 
     public List<Order> findByDate(LocalDateTime date) {
-        return em.createQuery("select o Order o where o.order_date = :date", Order.class)
+        return em.createQuery("select o Order o where o.orderDate = :date", Order.class)
                 .setParameter("date", date)
                 .getResultList();
     }
 
     public List<Order> findByStatus(OrderStatus status) {
-        return em.createQuery("select o Order o where o.order_status = :status", Order.class)
+        return em.createQuery("select o Order o where o.orderStatus = :status", Order.class)
                 .setParameter("status", status)
                 .getResultList();
     }
 
-    public List<Order> findByMember(Long id) {
-        return em.createQuery("select o Order o where o.member_id = :id", Order.class)
+    public List<Order> findByMemberId(Long id) {
+        return em.createQuery("select o from Order o where o.member.id = :id", Order.class)
                 .setParameter("id", id)
                 .getResultList();
     }

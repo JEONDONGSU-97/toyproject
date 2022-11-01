@@ -88,7 +88,7 @@
                 <br>
                 <b>합계: &nbsp;&nbsp;<text th:text="${item.price} * ${orderItemDto.count}"></text></b>
                 <br><br>
-                <a href="#" class="btn btn-primary">주문조회</a>
+                <a th:href="@{|/myOrder/${#authentication.name}|}" class="btn btn-primary">주문조회</a>
             </div>
 
         </div>

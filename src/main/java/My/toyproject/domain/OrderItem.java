@@ -29,20 +29,24 @@ public class OrderItem {
     private String name;
     private int price;
     private int count;
+    private String size;
 
     /**
      * 비즈니스 로직
      */
     //주문 상품 생성
-    public static OrderItem createOrderItem(Item item, int price, int count) {
+    public static OrderItem createOrderItem(Item item, int price, int count, String size) {
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
         orderItem.setName(item.getName());
         orderItem.setPrice(price);
         orderItem.setCount(count);
+        orderItem.setSize(size);
 
         //주문한 상품 갯수 만큼 재고에서 줄이기
         item.removeStock(count);
+
+        //주문 상품 가격
 
         log.info("아이템 수량 = {}", item.getStockQuantity());
         return orderItem;

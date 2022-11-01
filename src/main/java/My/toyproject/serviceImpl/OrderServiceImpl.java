@@ -28,7 +28,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     @Transactional
-    public Long order(Long memberId, List<Long> itemId, int count) {
+    public Long order(Long memberId, List<Long> itemId, int count, String size) {
 
         //회원 조회
         Member member = memberRepository.findById(memberId);
@@ -40,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
             Item findItem = itemRepository.findById(itemId.get(i));
 
             //주문 상품 생성
-            OrderItem orderItem = OrderItem.createOrderItem(findItem, findItem.getPrice(), count);
+            OrderItem orderItem = OrderItem.createOrderItem(findItem, findItem.getPrice(), count, size);
             orderItems.add(orderItem);
         }
 
@@ -58,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
         return order.getId();
     }
 
-    public Long singleOrder(Long memberId, Long itemId, int count) {
+    public Long singleOrder(Long memberId, Long itemId, int count, String size) {
 
         //회원 조회
         Member member = memberRepository.findById(memberId);
@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
         Item findItem = itemRepository.findById(itemId);
 
         //주문 상품 생성
-        OrderItem orderItem = OrderItem.createOrderItem(findItem, findItem.getPrice(), count);
+        OrderItem orderItem = OrderItem.createOrderItem(findItem, findItem.getPrice(), count, size);
 
         //배송 정보 생성
         Delivery delivery = new Delivery();

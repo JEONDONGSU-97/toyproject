@@ -140,7 +140,7 @@
                 <img th:src="${item.url}" alt="..." style="width: 400px; height: 400px;">
             </div>
 
-            <form th:action="@{|/shop/pay/${item.name}|}" th:object="${item}">
+            <form th:action="@{|/shop/pay/${item.name}|}" th:object="${item}" method="get">
             <div class="col">
                 <div class="card" style="text-align: left; height: 400px;">
                     <span><strong><text style="font-size: 30px;" th:text="*{name}"></text></strong></span>
@@ -165,14 +165,14 @@
                             <option value="small" th:if="${item.category ne '신발'}">S</option>
                             <option value="medium" th:if="${item.category ne '신발'}">M</option>
                             <option value="large" th:if="${item.category ne '신발'}">L</option>
-                            <option value="large" th:if="${item.category ne '신발'}">XL</option>
-                            <option value="large" th:if="${item.category ne '신발'}">XXL</option>
-                            <option value="large" th:if="${item.category eq '신발'}">230</option>
-                            <option value="large" th:if="${item.category eq '신발'}">240</option>
-                            <option value="large" th:if="${item.category eq '신발'}">250</option>
-                            <option value="large" th:if="${item.category eq '신발'}">260</option>
-                            <option value="large" th:if="${item.category eq '신발'}">270</option>
-                            <option value="large" th:if="${item.category eq '신발'}">280</option>
+                            <option value="xlarge" th:if="${item.category ne '신발'}">XL</option>
+                            <option value="xxlarge" th:if="${item.category ne '신발'}">XXL</option>
+                            <option value="230" th:if="${item.category eq '신발'}">230</option>
+                            <option value="240" th:if="${item.category eq '신발'}">240</option>
+                            <option value="250" th:if="${item.category eq '신발'}">250</option>
+                            <option value="260" th:if="${item.category eq '신발'}">260</option>
+                            <option value="270" th:if="${item.category eq '신발'}">270</option>
+                            <option value="280" th:if="${item.category eq '신발'}">280</option>
                         </select>
                     </div>
 

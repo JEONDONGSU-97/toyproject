@@ -38,10 +38,12 @@ public class PayController {
     private final OrderRepository orderRepository;
 
     @GetMapping("/pay/{name}")
-    public String pay(@PathVariable String name, OrderItemDto orderItemDto, Model model) {
+    public String pay(@PathVariable String name,
+                      @RequestParam int count,
+                      @RequestParam String size,
+                      Model model) {
 
         Item item = itemRepository.findByName(name);
-        ItemDto itemDto = new ItemDto(item);
 
         //사용자 정보 가져오기
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -60,6 +62,15 @@ public class PayController {
                 .detail(member.getAddress().getDetail())
                 .build();
 
+        OrderItemDto orderItemDto = OrderItemDto.builder()
+                .name(item.getName())
+                .totalPrice(item.getPrice() * count)
+                .price(item.getPrice())
+                .count(count)
+                .size(size)
+                .url(item.getImage().getUrl())
+                .build();
+
         log.info("======================================================");
         log.info("이름 : {}", memberDto.getName());
         log.info("상세 주소 : {}", memberDto.getDetail());
@@ -68,7 +79,7 @@ public class PayController {
         log.info("이메일 : {}", memberDto.getEmail());
         log.info("휴대폰번호 : {}", memberDto.getMobile());
 
-        model.addAttribute("item", itemDto);
+        model.addAttribute("orderItemDto", orderItemDto);
         model.addAttribute("member", memberDto);
         return "/shop/payPage";
     }
@@ -90,12 +101,16 @@ public class PayController {
         Delivery delivery = new Delivery();
         delivery.setStatus(DeliveryStatus.READY);
 
-        OrderItemDto orderItemDto = new OrderItemDto();
-        orderItemDto.setCount(count);
-        orderItemDto.setSize(size);
+//        OrderItemDto orderItemDto = new OrderItemDto();
+//        orderItemDto.setCount(count);
+//        orderItemDto.setSize(size);
+        OrderItemDto orderItemDto = OrderItemDto.builder()
+                .count(count)
+                .size(size)
+                .build();
 
         //주문 로직
-        Long orderId = orderService.singleOrder(member.getId(), item.getId(), count);
+        Long orderId = orderService.singleOrder(member.getId(), item.getId(), count, size);
         Order order = orderRepository.findById(orderId);
 
         model.addAttribute("member", order.getMember());

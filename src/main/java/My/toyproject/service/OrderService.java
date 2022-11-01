@@ -8,7 +8,7 @@ import java.util.List;
 public interface OrderService {
 
     //주문 생성
-    public Long order(Long memberId, List<Long> itemId, int count);
+    public Long order(Long memberId, List<Long> itemId, int count, String size);
 
     //주문 취소
     public void cancel(Long orderId);

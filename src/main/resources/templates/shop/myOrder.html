@@ -78,22 +78,31 @@
         <div class="row g-5">
 
             <table border="5" class="table">
-                <tr>
-                    <th>이미지</th>
-                    <th>상품명</th>
-                    <th>가격</th>
-                    <th>수량</th>
-                    <th>사이즈</th>
-                    <th>배송상태</th>
-                </tr>
-                <tr>
-                    <td><img th:src="${item.url}" alt="${item.name}" width="200" height="200"></td>
-                    <td th:text="${item.name}"></td>
-                    <td th:text="${item.price}"></td>
-                    <td th:text="${orderItemDto.count}"></td>
-                    <td th:text="${orderItemDto.size}"></td>
-                    <td th:text="${delivery.status}"></td>
-                </tr>
+                    <tr>
+                        <th>이미지</th>
+                        <th>상품명</th>
+                        <th>가격</th>
+                        <th>수량</th>
+                        <th>사이즈</th>
+                        <th>주문상태</th>
+                        <th>배송상태</th>
+                        <th>합계</th>
+                        <th></th>
+                    </tr>
+                <th:block th:each="orderItem : ${orderItemList}">
+                    <tr>
+                        <td><img th:src="${orderItem.url}" alt="${orderItem.name}" width="200" height="200"></td>
+                        <td th:text="${orderItem.name}"></td>
+                        <td th:text="${orderItem.price}"></td>
+                        <td th:text="${orderItem.count}"></td>
+                        <td th:text="${orderItem.size}"></td>
+                        <td th:text="${orderItem.deliveryStatus}"></td>
+                        <td th:text="${orderItem.orderStatus}"></td>
+                        <td th:text="${orderItem.totalPrice}"></td>
+                        <td th:if="${(orderItem.orderStatus) == T(My.toyproject.domain.status.OrderStatus).READY}"><a th:href="@{|/order/${member.loginId}/${orderItem.orderId}|}" class="btn btn-danger">주문취소</a></td>
+                        <td th:if="${(orderItem.orderStatus) == T(My.toyproject.domain.status.OrderStatus).CANCEL}"><button th:href="@{|/order/${member.loginId}/${orderItem.orderId}|}" class="btn btn-danger" disabled>취소된 상품</button></td>
+                    </tr>
+                </th:block>
             </table>
 
         </div>

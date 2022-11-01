@@ -225,14 +225,14 @@
                             <th>합계</th>
                         </tr>
                         <tr>
-                            <td><img th:src="${item.url}" alt="${item.name}" width="200" height="200"></td>
+                            <td><img th:src="${orderItemDto.url}" alt="${orderItemDto.name}" width="200" height="200"></td>
                             <td th:text="${orderItemDto.name}"></td>
-                            <td th:text="${item.price}"></td>
+                            <td th:text="${orderItemDto.price}"></td>
                             <td th:text="${orderItemDto.count}"></td>
                             <td th:text="${orderItemDto.size}"></td>
                             <td>기본배송</td>
                             <td>무료</td>
-                            <td th:text="${item.price} * ${orderItemDto.count}"></td>
+                            <td th:text="${orderItemDto.totalPrice}"></td>
                         </tr>
                     </table>
 
@@ -240,24 +240,24 @@
 
 <!--                    <h2 class="mb-3">결제 수단</h2>-->
 
-                    <div class="my-3">
-                        <div class="form-check">
-                            <input id="payments1" name="paymentMethod" type="radio" class="form-check-input" checked required>
-                            <label class="form-check-label" for="payments1">카드 결제</label>
-                        </div>
-                        <div class="form-check">
-                            <input id="payments2" name="paymentMethod" type="radio" class="form-check-input" required>
-                            <label class="form-check-label" for="payments2">무통장 입금</label>
-                        </div>
-                        <div class="form-check">
-                            <input id="payments3" name="paymentMethod" type="radio" class="form-check-input" required>
-                            <label class="form-check-label" for="payments3">카카오 페이</label>
-                        </div>
-                        <div class="form-check">
-                            <input id="payments4" name="paymentMethod" type="radio" class="form-check-input" required>
-                            <label class="form-check-label" for="payments4">핸드폰 결제</label>
-                        </div>
-                    </div>
+<!--                    <div class="my-3">-->
+<!--                        <div class="form-check">-->
+<!--                            <input id="payments1" name="paymentMethod" type="radio" class="form-check-input" checked required>-->
+<!--                            <label class="form-check-label" for="payments1">카드 결제</label>-->
+<!--                        </div>-->
+<!--                        <div class="form-check">-->
+<!--                            <input id="payments2" name="paymentMethod" type="radio" class="form-check-input" required>-->
+<!--                            <label class="form-check-label" for="payments2">무통장 입금</label>-->
+<!--                        </div>-->
+<!--                        <div class="form-check">-->
+<!--                            <input id="payments3" name="paymentMethod" type="radio" class="form-check-input" required>-->
+<!--                            <label class="form-check-label" for="payments3">카카오 페이</label>-->
+<!--                        </div>-->
+<!--                        <div class="form-check">-->
+<!--                            <input id="payments4" name="paymentMethod" type="radio" class="form-check-input" required>-->
+<!--                            <label class="form-check-label" for="payments4">핸드폰 결제</label>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
 <!--                    <div class="row gy-3">-->
 <!--                        <div class="col-md-6">-->
@@ -326,27 +326,17 @@
           pg: "kakaopay",
           pay_method: "card",
           merchant_uid: "merchant_" + new Date().getTime(),   //주문번호
-          name: /*[[${item.name}]]*/,
-          amount: /*[[${item.price} * ${orderItemDto.count}]]*/,
+          name: /*[[${orderItemDto.name}]]*/,
+          amount: /*[[${orderItemDto.totalPrice}]]*/,
           buyer_email: /*[[${member.email}]]*/,
           buyer_name: /*[[${member.name}]]*/,
           buyer_tel: /*[[${member.mobile}]]*/,
           buyer_addr: /*[[${member.street} + ${member.detail}]]*/,
-          buyer_postcode: "01181",
+          buyer_postcode: "01181"
       }, function (rsp) { // callback
           if (rsp.success) {
-<!--            $.ajax({-->
-<!--                url: "/shop/pay/success",-->
-<!--                data: {-->
-<!--                        orderNum: "merchant_" + new Date().getTime(),-->
-<!--                        orderItem: /*[[${item.name}]]*/,-->
-<!--                        orderItemUrl: /*[[${item.url}]]*/,-->
-<!--                        orderItemPrice: /*[[${item.price}]]*/-->
-<!--                },-->
-<!--                method: "GET"-->
-<!--            });-->
             console.log(rsp);
-            window.location.href = 'http://localhost:8080/shop/pay/success/[[${member.name}]]/[[${item.name}]]/[[${orderItemDto.count}]]/[[${orderItemDto.size}]]'
+            window.location.href = 'http://localhost:8080/shop/pay/success/[[${member.name}]]/[[${orderItemDto.name}]]/[[${orderItemDto.count}]]/[[${orderItemDto.size}]]'
           } else {
             console.log(rsp);
           }
