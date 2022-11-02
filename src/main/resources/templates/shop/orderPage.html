@@ -140,7 +140,8 @@
                 <img th:src="${item.url}" alt="..." style="width: 400px; height: 400px;">
             </div>
 
-            <form th:action="@{|/shop/pay/${item.name}|}" th:object="${item}" method="get">
+<!--            <form th:action="@{|/shop/pay/${item.name}|}" th:object="${item}" method="get">-->
+            <th:block th:object="${item}">
             <div class="col">
                 <div class="card" style="text-align: left; height: 400px;">
                     <span><strong><text style="font-size: 30px;" th:text="*{name}"></text></strong></span>
@@ -150,7 +151,7 @@
                     <div class="input-group mb-3">
                         <label class="input-group-text" for="inputGroupSelect01">수량</label>
                         <select class="form-select" id="inputGroupSelect01" name="count" th:disabled="*{stockQuantity} eq 0 ? 'disabled'" required>
-                            <option value="">-- 수량을 선택하세요 --</option>
+                            <option value="0">-- 수량을 선택하세요 --</option>
                             <th:block th:each="num : ${#numbers.sequence(1, item.stockQuantity)}">
                                 <option th:text="${num}" th:value="${num}"></option>
                             </th:block>
@@ -160,7 +161,7 @@
                     <div class="input-group mb-3">
                         <label class="input-group-text" for="inputGroupSelect02">사이즈</label>
                         <select class="form-select" id="inputGroupSelect02" name="size" th:disabled="${item.stockQuantity eq 0} ? 'disabled'" required>
-                            <option value="">-- 사이즈를 선택하세요 --</option>
+                            <option value=" ">-- 사이즈를 선택하세요 --</option>
                             <!-- 신발일때와 아닐때 사이즈 나누기 -->
                             <option value="small" th:if="${item.category ne '신발'}">S</option>
                             <option value="medium" th:if="${item.category ne '신발'}">M</option>
@@ -187,8 +188,9 @@
                     <!-- Button trigger modal -->
                     <a th:onclick="#" class="btn btn-primary" sec:authorize="isAnonymous()" th:if="${item.stockQuantity ne 0}" data-bs-toggle="modal" data-bs-target="#exampleModal">BUY NOW(비회원)</a>
                     <a th:onclick="#" class="btn btn-primary" sec:authorize="isAnonymous()" th:if="${item.stockQuantity ne 0}" data-bs-toggle="modal" data-bs-target="#exampleModal">ADD CART(비회원)</a>
-                    <input type="submit" class="btn btn-primary" sec:authorize="hasRole('USER')" th:if="${item.stockQuantity ne 0}" value="BUY NOW(회원)">
-                    <input type="submit" class="btn btn-primary" sec:authorize="hasRole('USER')" th:if="${item.stockQuantity ne 0}" value="ADD CART(회원)">
+<!--                    <button class="btn btn-primary" sec:authorize="hasRole('USER')" th:if="${item.stockQuantity ne 0}" value="">BUY NOW(회원)</button>-->
+                    <input type="button" th:onclick="payAlert()" class="btn btn-primary" sec:authorize="hasRole('USER')" th:if="${item.stockQuantity ne 0}" value="BUY NOW(회원)"></input>
+                    <input type="button" th:onclick="cartAlert()" class="btn btn-primary" sec:authorize="hasRole('USER')" th:if="${item.stockQuantity ne 0}" value="ADD CART(회원)"></input>
                     <button class="btn btn-danger" th:if="${item.stockQuantity eq 0}" disabled style="margin-top: 36px;">OUT OF STOCK</button>
 
                     <!-- Modal -->
@@ -213,7 +215,8 @@
 
                 </div>
             </div>
-            </form>
+            </th:block>
+<!--            </form>-->
 
         </div>
     </div>
@@ -222,7 +225,44 @@
 <div th:replace="fragments/footer :: footer"/>
 </body>
 <script th:inline="javascript">
+function cartAlert() {
+
+    let name = /*[[${item.name}]]*/;
+    let count = $("#inputGroupSelect01 option:selected").val();
+    let size = $("#inputGroupSelect02 option:selected").val();
+
+    console.log(name);
+    console.log(count);
+    console.log(size);
+
+    if (count == 0 || size == " ") {
+        alert('수량 또는 사이즈를 선택해주세요.');
+    } else {
+        window.location.href = "http://localhost:8080/myCart/" + name + "/" + count + "/" + size;
+    }
+
+}
+
+function payAlert() {
+
+    let name = /*[[${item.name}]]*/;
+    let count = $("#inputGroupSelect01 option:selected").val();
+    let size = $("#inputGroupSelect02 option:selected").val();
+
+    console.log(name);
+    console.log(count);
+    console.log(size);
+
+    if (count == 0 || size == " ") {
+        alert('수량 또는 사이즈를 선택해주세요.');
+    } else {
+        window.location.href = "http://localhost:8080/shop/pay/" + name + "/" + count + "/" + size;
+    }
+
+}
+
 $(function(){
+
     $("#inputGroupSelect01").on("change", function(){
         let price = /*[[${item.price}]]*/;
         let count = $("#inputGroupSelect01 option:selected").val();

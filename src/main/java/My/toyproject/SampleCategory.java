@@ -2,6 +2,7 @@ package My.toyproject;
 
 import My.toyproject.domain.*;
 import My.toyproject.domain.role.Role;
+import My.toyproject.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -31,9 +32,19 @@ public class SampleCategory {
 
         public void InitDB() {
 
+            /**
+             * 회원 생성
+             */
             Member member1 = createMember("고수", "user", "1234", "01011112222", "user@user.com", true, new Address("123", "서울 용산구 독서당로", "한남아파트 1003동 1004호"), Role.USER);
             Member member2 = createMember("원빈", "admin", "1234", "01022223333", "admin@admin.com", true, new Address("456", "경기 성남시 분당구 문정로", "분당아파트 1002동 1050호"), Role.ADMIN);
             Member member3 = createMember("현빈", "test", "1234", "01033332222", "test@test.com", true, new Address("134", "부산 강서구 가락대로 ", "부산아파트 108동 1200호"), Role.USER);
+
+//            /**
+//             * 회원 장바구니 생성
+//             */
+//            createCart(member1);
+//            createCart(member2);
+//            createCart(member3);
 
             /**
              * 카테고리(parent)
@@ -404,6 +415,13 @@ public class SampleCategory {
             Item slippers7 = createItem("타비 플립플롭", 29000, 0, slippers, slippersImage7);
             Item slippers8 = createItem("루킨 레더 슬리퍼", 89000, 10, slippers, slippersImage8);
         }
+
+//        private Cart createCart(Member member) {
+//            Cart cart = new Cart();
+//            cart.setMember(member);
+//            em.persist(cart);
+//            return cart;
+//        }
 
         private Member createMember(String name, String loginId, String password, String mobile, String email, boolean enabled, Address address, Role role) {
             Member member = Member.builder()

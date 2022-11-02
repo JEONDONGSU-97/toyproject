@@ -37,10 +37,11 @@ public class PayController {
     private final OrderServiceImpl orderService;
     private final OrderRepository orderRepository;
 
-    @GetMapping("/pay/{name}")
+    //주문
+    @GetMapping("/pay/{name}/{count}/{size}")
     public String pay(@PathVariable String name,
-                      @RequestParam int count,
-                      @RequestParam String size,
+                      @PathVariable int count,
+                      @PathVariable String size,
                       Model model) {
 
         Item item = itemRepository.findByName(name);
@@ -62,6 +63,7 @@ public class PayController {
                 .detail(member.getAddress().getDetail())
                 .build();
 
+        //item => OrderItemDto
         OrderItemDto orderItemDto = OrderItemDto.builder()
                 .name(item.getName())
                 .totalPrice(item.getPrice() * count)
@@ -84,7 +86,8 @@ public class PayController {
         return "/shop/payPage";
     }
 
-    //    @GetMapping("/pay/success/{orderNum}/{orderItem}/{orderItemUrl}/{orderItemPrice}")
+    //결제 성공
+    //주문 상품 생성
     @GetMapping("/pay/success/" + '"' + "{memberName}" + '"' + '/' + '"' + "{name}" + '"' + "/{count}" + '/' + '"' + "{size}" + '"')
     public String paySuccess(@PathVariable String memberName, @PathVariable String name, @PathVariable int count, @PathVariable String size, Model model) {
 

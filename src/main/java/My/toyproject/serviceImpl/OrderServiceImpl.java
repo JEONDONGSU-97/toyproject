@@ -58,6 +58,7 @@ public class OrderServiceImpl implements OrderService {
         return order.getId();
     }
 
+    @Transactional
     public Long singleOrder(Long memberId, Long itemId, int count, String size) {
 
         //회원 조회

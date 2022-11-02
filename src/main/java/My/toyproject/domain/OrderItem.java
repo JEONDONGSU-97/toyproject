@@ -48,7 +48,6 @@ public class OrderItem {
         item.removeStock(count);
 
         //주문 상품 가격
-
         log.info("아이템 수량 = {}", item.getStockQuantity());
         return orderItem;
     }

@@ -24,13 +24,13 @@ public class OrderRepository {
     }
 
     public List<Order> findByDate(LocalDateTime date) {
-        return em.createQuery("select o Order o where o.orderDate = :date", Order.class)
+        return em.createQuery("select o from Order o where o.orderDate = :date", Order.class)
                 .setParameter("date", date)
                 .getResultList();
     }
 
     public List<Order> findByStatus(OrderStatus status) {
-        return em.createQuery("select o Order o where o.orderStatus = :status", Order.class)
+        return em.createQuery("select o from Order o where o.orderStatus = :status", Order.class)
                 .setParameter("status", status)
                 .getResultList();
     }

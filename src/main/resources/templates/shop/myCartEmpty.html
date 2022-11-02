@@ -87,16 +87,6 @@
                     <th>합계</th>
                     <th></th>
                 </tr>
-                <th:block th:each="cartItem : ${cartItemList}">
-                    <tr>
-                        <td><img th:src="${cartItem.url}" alt="${cartItem.name}" width="200" height="200"></td>
-                        <td th:text="${cartItem.name}"></td>
-                        <td th:text="${cartItem.price}"></td>
-                        <td th:text="${cartItem.count}"></td>
-                        <td th:text="${cartItem.size}"></td>
-                        <td th:text="${cartItem.totalPrice}"></td>
-                    </tr>
-                </th:block>
             </table>
 
         </div>

@@ -88,7 +88,7 @@
                         <a sec:authorize="isAnonymous()" th:href="@{/member/signUp}" class="btn btn-secondary my-2">회원가입</a>
 
                         <a sec:authorize="hasRole('USER')" th:href="@{/myPage}" class="btn btn-secondary my-2">마이페이지</a>
-                        <a sec:authorize="hasRole('USER')" th:href="@{/myCart}" class="btn btn-secondary my-2">장바구니</a>
+                        <a sec:authorize="hasRole('USER')" th:href="@{|/myCart/${#authentication.name}|}" class="btn btn-secondary my-2">장바구니</a>
                         <a sec:authorize="hasRole('USER')" th:href="@{|/myOrder/${#authentication.name}|}" class="btn btn-secondary my-2">주문조회</a>
                         <a sec:authorize="isAuthenticated()" th:href="@{/member/logout}" class="btn btn-danger my-2">로그아웃</a>
                     </ul>

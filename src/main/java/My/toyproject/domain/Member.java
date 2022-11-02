@@ -24,9 +24,8 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @OneToOne(mappedBy = "member", fetch = LAZY, cascade = ALL)
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
+    @OneToMany(mappedBy = "member")
+    private List<Cart> carts = new ArrayList<>();
 
     private String name;
     @Column(unique = true)
