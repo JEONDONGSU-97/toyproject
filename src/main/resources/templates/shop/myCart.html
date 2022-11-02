@@ -86,6 +86,7 @@
                     <th>사이즈</th>
                     <th>합계</th>
                     <th></th>
+                    <th></th>
                 </tr>
                 <th:block th:each="cartItem : ${cartItemList}">
                     <tr>
@@ -95,6 +96,8 @@
                         <td th:text="${cartItem.count}"></td>
                         <td th:text="${cartItem.size}"></td>
                         <td th:text="${cartItem.totalPrice}"></td>
+                        <td><button id="paymentButton" class="btn btn-primary" onclick="requestPay()">결제</button></td>
+                        <td><a th:href="@{|/cart/${member.loginId}/${cartItem.cartId}|}" class="btn btn-danger">삭제</a></td>
                     </tr>
                 </th:block>
             </table>
@@ -110,6 +113,7 @@
     </footer>
 </div>
 <script th:inline="javascript">
+
 
 </script>
 </body>

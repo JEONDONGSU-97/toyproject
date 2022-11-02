@@ -27,4 +27,10 @@ public class CartRepository {
                 .setParameter("id", id)
                 .getResultList();
     }
+
+    //장바구니 삭제
+    public void deleteCart(Long id) {
+        Cart cart = findById(id);
+        em.remove(cart);
+    }
 }

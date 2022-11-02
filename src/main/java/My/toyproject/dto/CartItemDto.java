@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @Getter @Setter
 public class CartItemDto {
 
+    private Long cartId;
     private int totalPrice;
 
-    //주문상품에 관한 정보
     private String name;
     private int price;
     private String url;
@@ -21,7 +21,8 @@ public class CartItemDto {
     private String size;
 
     @Builder
-    public CartItemDto(int totalPrice, String name, int price, int count, String size, String url) {
+    public CartItemDto(Long cartId, int totalPrice, String name, int price, int count, String size, String url) {
+        this.cartId = cartId;
         this.totalPrice = totalPrice;
         this.name = name;
         this.price = price;

@@ -162,6 +162,7 @@ public class HomeController {
                 CartItem cartItem = cartItemRepository.findById(cart.getId());
 
                 CartItemDto cartItemDto = CartItemDto.builder()
+                        .cartId(cart.getId())
                         .name(cartItem.getName())
                         .price(cartItem.getPrice())
                         .count(cartItem.getCount())
@@ -185,6 +186,17 @@ public class HomeController {
 
         model.addAttribute("member", member);
         return "/shop/myCartEmpty";
+    }
+
+    //장바구니 비우기
+    @GetMapping("/cart/{loginId}/{cartId}")
+    public String cartEmpty(@PathVariable String loginId, @PathVariable Long cartId) {
+        Member member = memberRepository.findByLoginId(loginId);
+        Cart cart = cartRepository.findById(cartId);
+        cartRepository.deleteCart(cart.getId());
+        cart.emptyCart();
+
+        return "redirect:/myCart/{loginId}";
     }
 
     //주문로직
