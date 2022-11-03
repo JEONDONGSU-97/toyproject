@@ -120,9 +120,11 @@ public class PayController {
         List<Cart> memberCart = cartRepository.findByMemberId(member.getId());
 
         if (!memberCart.isEmpty()) {
-            CartItem memberCartItem = cartItemRepository.findByItemId(item.getId());
-            Long id = memberCartItem.getCart().getId();
-            cartRepository.deleteCart(id);
+            if (!(cartItemRepository.findByItemId(item.getId()) == null)) {
+                CartItem memberCartItem = cartItemRepository.findByItemId(item.getId());
+                Long id = memberCartItem.getCart().getId();
+                cartRepository.deleteCart(id);
+            }
         }
 
         model.addAttribute("member", order.getMember());
