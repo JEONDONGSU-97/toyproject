@@ -28,9 +28,18 @@ public class CartRepository {
                 .getResultList();
     }
 
-    //장바구니 삭제
+    //장바구니 아이템 삭제 (단건)
     public void deleteCart(Long id) {
         Cart cart = findById(id);
         em.remove(cart);
     }
+
+    //회원 장바구니 아이템 삭제 (전체)
+    public void deleteCartAll(Long memberId) {
+        List<Cart> memberCart = findByMemberId(memberId);
+        for (Cart cart : memberCart) {
+            em.remove(cart);
+        }
+    }
+
 }

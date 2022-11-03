@@ -146,6 +146,14 @@ public class HomeController {
     public String myCartPage(@PathVariable String loginId, Model model) {
 
         Member member = memberRepository.findByLoginId(loginId);
+        MemberDto memberDto = MemberDto.builder()
+                .name(member.getName())
+                .email(member.getEmail())
+                .mobile(member.getMobile())
+                .zipCode(member.getAddress().getZipCode())
+                .street(member.getAddress().getStreet())
+                .detail(member.getAddress().getDetail())
+                .build();
         Long memberId = member.getId();
 
         //회원 장바구니 조회
@@ -173,7 +181,8 @@ public class HomeController {
                 cartItemDtos.add(cartItemDto);
             }
 
-            model.addAttribute("member", member);
+            model.addAttribute("memberLoginId", member.getLoginId());
+            model.addAttribute("member", memberDto);
             model.addAttribute("cartItemList", cartItemDtos);
             return "/shop/myCart";
         }
@@ -188,13 +197,22 @@ public class HomeController {
         return "/shop/myCartEmpty";
     }
 
-    //장바구니 비우기
+    //장바구니 아이템 삭제 (단건)
     @GetMapping("/cart/{loginId}/{cartId}")
     public String cartEmpty(@PathVariable String loginId, @PathVariable Long cartId) {
         Member member = memberRepository.findByLoginId(loginId);
         Cart cart = cartRepository.findById(cartId);
         cartRepository.deleteCart(cart.getId());
         cart.emptyCart();
+
+        return "redirect:/myCart/{loginId}";
+    }
+
+    //장바구니 아이템 삭제 (전부)
+    @GetMapping("/cart/{loginId}")
+    public String cartAllEmpty(@PathVariable String loginId) {
+        Member member = memberRepository.findByLoginId(loginId);
+        cartRepository.deleteCartAll(member.getId());
 
         return "redirect:/myCart/{loginId}";
     }

@@ -65,6 +65,8 @@
         }
     </style>
 <body class="bg-light">
+<!-- iamport.payment.js -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
 <div class="container">
     <main>
         <div class="py-5 text-center">
@@ -92,16 +94,18 @@
                     <tr>
                         <td><img th:src="${cartItem.url}" alt="${cartItem.name}" width="200" height="200"></td>
                         <td th:text="${cartItem.name}"></td>
-                        <td th:text="${cartItem.price}"></td>
+                        <td id="cartItemPrice" th:text="${cartItem.price}"></td>
                         <td th:text="${cartItem.count}"></td>
                         <td th:text="${cartItem.size}"></td>
                         <td th:text="${cartItem.totalPrice}"></td>
-                        <td><button id="paymentButton" class="btn btn-primary" onclick="requestPay()">결제</button></td>
-                        <td><a th:href="@{|/cart/${member.loginId}/${cartItem.cartId}|}" class="btn btn-danger">삭제</a></td>
+                        <td><button class="btn btn-primary" onclick="requestPay()">결제</button></td>
+                        <td><a th:href="@{|/cart/${memberLoginId}/${cartItem.cartId}|}" class="btn btn-danger">삭제</a></td>
                     </tr>
                 </th:block>
-            </table>
 
+            </table>
+            <button class="btn btn-primary" onclick="requestPay()">BUY ALL</button>
+            <a th:href="@{|/cart/${memberLoginId}}" class="btn btn-danger" style="margin-top: -1px;">CLEAR ALL</a>
         </div>
     </main>
 
@@ -114,6 +118,48 @@
 </div>
 <script th:inline="javascript">
 
+    let IMP = window.IMP;
+    IMP.init('imp40078137');
+
+    let amount = 0;
+    let size = [[${cartItemList.size()}]] - 1;
+    let name = [[${cartItemList.get(0).getName()}]] + " 외 " + size + "건"
+
+    let cartItemName = "";
+    [# th:each="cartItem : ${cartItemList}"]
+        cartItemPrice = []
+        cartItemName = [[${cartItem.name}]];
+        console.log(cartItemName);
+    [/]
+
+    console.log(name);
+
+    [# th:each="cartItem : ${cartItemList}"]
+        amount += [[${cartItem.totalPrice}]];
+    [/]
+
+    console.log(amount);
+
+    function requestPay() {
+          IMP.request_pay({
+              pg: "kakaopay",
+              pay_method: "card",
+              merchant_uid: "merchant_" + new Date().getTime(),   //주문번호
+              name: name,
+              amount: amount,
+              buyer_email: /*[[${member.email}]]*/,
+              buyer_name: /*[[${member.name}]]*/,
+              buyer_tel: /*[[${member.mobile}]]*/,
+              buyer_addr: /*[[${member.street} + ${member.detail}]]*/,
+              buyer_postcode: "01181"
+          }, function (rsp) { // callback
+              if (rsp.success) {
+                window.location.href = 'http://localhost:8080/shop/pay/success/[[${member.name}]]/' + name + "/" + amount;
+              } else {
+                console.log(rsp);
+              }
+          });
+        }
 
 </script>
 </body>

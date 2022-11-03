@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extra/spring-security">
+<head th:replace="fragments/header :: header">
+</head>
+<style>
+        td {
+            vertical-align: middle;
+        }
+
+        table {
+            text-align: center;
+            margin: auto;
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .b-example-divider {
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
+<body class="bg-light">
+<div class="container">
+    <main>
+        <div class="py-5 text-center">
+            <h1>주문이 완료되었습니다.</h1>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="row g-5">
+
+            <div style="margin-top: 50px; font-size:20px;">
+                <b>주문자명: &nbsp;&nbsp;<text th:text="${member.name}"></text></b>
+                <br>
+                <b>주소: &nbsp;&nbsp;<text th:text="${member.address.street} + ${member.address.detail}"></text></b>
+                <br>
+                <b>상품명: &nbsp;&nbsp;<text th:text="${name}"></text></b>
+                <br>
+                <b>합계: &nbsp;&nbsp;<text th:text="${amount}"></text></b>
+                <br><br>
+                <a th:href="@{|/myOrder/${#authentication.name}|}" class="btn btn-primary">주문조회</a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2017–2022 Dong's Shop</p>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="/">홈으로</a></li>
+        </ul>
+    </footer>
+</div>
+
+</body>
+</html>

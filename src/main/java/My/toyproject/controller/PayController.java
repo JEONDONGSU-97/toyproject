@@ -5,9 +5,7 @@ import My.toyproject.domain.status.DeliveryStatus;
 import My.toyproject.dto.ItemDto;
 import My.toyproject.dto.MemberDto;
 import My.toyproject.dto.OrderItemDto;
-import My.toyproject.repository.ItemRepository;
-import My.toyproject.repository.MemberRepository;
-import My.toyproject.repository.OrderRepository;
+import My.toyproject.repository.*;
 import My.toyproject.serviceImpl.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +34,8 @@ public class PayController {
     private final MemberRepository memberRepository;
     private final OrderServiceImpl orderService;
     private final OrderRepository orderRepository;
+    private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
 
     //주문
     @GetMapping("/pay/{name}/{count}/{size}")
@@ -87,7 +87,7 @@ public class PayController {
     }
 
     //결제 성공
-    //주문 상품 생성
+    //주문 상품 생성 (단건)
     @GetMapping("/pay/success/" + '"' + "{memberName}" + '"' + '/' + '"' + "{name}" + '"' + "/{count}" + '/' + '"' + "{size}" + '"')
     public String paySuccess(@PathVariable String memberName, @PathVariable String name, @PathVariable int count, @PathVariable String size, Model model) {
 
@@ -125,5 +125,57 @@ public class PayController {
         log.info("count = {}", count);
         log.info("결제 완료!!!!!!!!!!!");
         return "/shop/paySuccess";
+    }
+
+    //결제 성공
+    //주문 상품 생성 (전체)
+    @GetMapping("/pay/success/" + '"' + "{memberName}" + '"' + "/{name}/{amount}")
+    public String paySuccessAll(@PathVariable String memberName,
+                                @PathVariable String name,
+                                @PathVariable String amount,
+                                Model model) {
+
+        //회원 조회
+        Member member = memberRepository.findByName(memberName);
+        MemberDto memberDto = MemberDto.builder()
+                .name(member.getName())
+                .street(member.getAddress().getStreet())
+                .detail(member.getAddress().getDetail())
+                .build();
+
+        //배송 준비
+        Delivery delivery = new Delivery();
+        delivery.setStatus(DeliveryStatus.READY);
+
+        //회원 장바구니 조회
+        List<Cart> memberCart = cartRepository.findByMemberId(member.getId());
+
+        //회원 장바구니 아이템 조회
+        for (Cart cart : memberCart) {
+            List<CartItem> cartItem = cartItemRepository.findByCartId(cart.getId());
+            int count = cartItem.get(0).getCount();
+            String size = cartItem.get(0).getSize();
+
+            OrderItemDto orderItemDto = OrderItemDto.builder()
+                    .count(count)
+                    .size(size)
+                    .build();
+
+            //주문 로직
+            Long orderId = orderService.singleOrder(member.getId(), cartItem.get(0).getItem().getId(), count, size);
+            Order order = orderRepository.findById(orderId);
+
+            cartRepository.deleteCart(cart.getId());
+        }
+
+        model.addAttribute("member", member);
+        model.addAttribute("orderItemDto", memberCart.get(0).getCartItems().get(0));
+        model.addAttribute("name", name);
+        model.addAttribute("amount", amount);
+        model.addAttribute("delivery", delivery);
+
+        log.info("====================================================================================");
+        log.info("결제 완료!!!!!!!!!!!");
+        return "/shop/paySuccessCart";
     }
 }
