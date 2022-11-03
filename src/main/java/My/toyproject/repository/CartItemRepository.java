@@ -34,4 +34,11 @@ public class CartItemRepository {
         return em.createQuery("select ci from CartItem ci", CartItem.class)
                 .getResultList();
     }
+
+    //장바구니 아이템 상품아이디로 조회
+    public CartItem findByItemId(Long id) {
+        return em.createQuery("select ci from CartItem ci where ci.item.id = :id", CartItem.class)
+                .setParameter("id", id)
+                .getSingleResult();
+    }
 }

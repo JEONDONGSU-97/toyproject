@@ -92,13 +92,13 @@
                 </tr>
                 <th:block th:each="cartItem : ${cartItemList}">
                     <tr>
-                        <td><img th:src="${cartItem.url}" alt="${cartItem.name}" width="200" height="200"></td>
+                        <td><img th:src="${cartItem.url}" th:alt="${cartItem.name}" width="200" height="200"></td>
                         <td th:text="${cartItem.name}"></td>
                         <td id="cartItemPrice" th:text="${cartItem.price}"></td>
                         <td th:text="${cartItem.count}"></td>
                         <td th:text="${cartItem.size}"></td>
                         <td th:text="${cartItem.totalPrice}"></td>
-                        <td><button class="btn btn-primary" onclick="requestPay()">결제</button></td>
+                        <td><a class="btn btn-primary" th:href="@{|/shop/pay/${cartItem.name}/${cartItem.count}/${cartItem.size}|}">결제</a></td>
                         <td><a th:href="@{|/cart/${memberLoginId}/${cartItem.cartId}|}" class="btn btn-danger">삭제</a></td>
                     </tr>
                 </th:block>

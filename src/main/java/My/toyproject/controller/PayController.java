@@ -37,7 +37,7 @@ public class PayController {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
 
-    //주문
+    //주문 (장바구니에서도 단건 결제누르면 여기로옴)
     @GetMapping("/pay/{name}/{count}/{size}")
     public String pay(@PathVariable String name,
                       @PathVariable int count,
@@ -115,6 +115,15 @@ public class PayController {
         //주문 로직
         Long orderId = orderService.singleOrder(member.getId(), item.getId(), count, size);
         Order order = orderRepository.findById(orderId);
+
+        //장바구니 아이템이면 장바구니 아이템삭제
+        List<Cart> memberCart = cartRepository.findByMemberId(member.getId());
+
+        if (!memberCart.isEmpty()) {
+            CartItem memberCartItem = cartItemRepository.findByItemId(item.getId());
+            Long id = memberCartItem.getCart().getId();
+            cartRepository.deleteCart(id);
+        }
 
         model.addAttribute("member", order.getMember());
         model.addAttribute("orderItemDto", orderItemDto);
