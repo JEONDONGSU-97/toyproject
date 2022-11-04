@@ -58,6 +58,7 @@ public class OrderServiceImpl implements OrderService {
         return order.getId();
     }
 
+    @Override
     @Transactional
     public Long singleOrder(Long memberId, Long itemId, int count, String size) {
 
