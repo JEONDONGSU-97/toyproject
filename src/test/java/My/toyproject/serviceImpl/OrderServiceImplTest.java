@@ -47,6 +47,7 @@ class OrderServiceImplTest {
         Item item2 = createItem("나이키 운동화", 60000, 100);
 
         int count = 2;
+        String size = "260";
 
         List<Long> itemList = new ArrayList<>();
 
@@ -54,7 +55,7 @@ class OrderServiceImplTest {
         itemList.add(item2.getId());
 
         //when
-        Long orderId = orderServiceImpl.order(user.getId(), itemList, count);
+        Long orderId = orderServiceImpl.order(user.getId(), itemList, count, size);
         Order order = orderRepository.findById(orderId);
 
         //then
@@ -62,24 +63,6 @@ class OrderServiceImplTest {
         assertThat(item1.getStockQuantity()).isEqualTo(498); //아디다스 운동화 재고
         assertThat(item2.getStockQuantity()).isEqualTo(98); //나이키 운동화 재고
         assertThat(order.totalOrderPrice()).isEqualTo((item1.getPrice()*count) + (item2.getPrice()*count)); //주문 가격
-    }
-
-    @Test
-    @DisplayName("상품 재고 수량 초과")
-    public void outOfStock() throws Exception {
-        //given
-        Item item = createItem("휠라 운동화", 45000, 10);
-        Member user = createUser("user1", "010-xxxx-xxxx", new Address("1234", "서울 용산구 독서당로 6", "xx아파트 xx동 xx호"));
-
-        int count = 11;
-
-        List<Long> itemList = new ArrayList<>();
-        itemList.add(item.getId());
-
-        //then
-        assertThrows(OutOfStockException.class, () ->
-                //when
-                orderServiceImpl.order(user.getId(), itemList, count));
     }
 
     @Test
@@ -105,12 +88,12 @@ class OrderServiceImplTest {
     }
 
     private Item createItem(String name, int price, int count) {
-        Item item1 = new Item();
-        item1.setName(name);
-        item1.setPrice(price);
-        item1.setStockQuantity(count);
-        itemRepository.save(item1);
-        return item1;
+        Item item = new Item();
+        item.setName(name);
+        item.setPrice(price);
+        item.setStockQuantity(count);
+        itemRepository.save(item);
+        return item;
     }
 
     private Member createUser(String name, String mobile, Address address) {
