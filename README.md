@@ -20,7 +20,7 @@
 - H2 DB
 - BootStrap
 - JQuery
-- Html/css/javaScript
+- HTML/CSS/JavaScript
 
 # 사용한 API
 - iamport API (결제기능)
