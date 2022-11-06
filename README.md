@@ -76,7 +76,7 @@
 # 결제 페이지
   - iamportAPI를 이용하여 카카오페이 결제기능 구현
   
-  ![screencapture-localhost-8080-shop-pay-1-large-2022-11-06-16_02_03](https://user-images.githubusercontent.com/83935410/200158573-b2d517ab-48ba-4ca6-8096-4e658ae6cd79.png)
+  ![screencapture-localhost-8080-shop-pay-1-xlarge-2022-11-06-16_16_31](https://user-images.githubusercontent.com/83935410/200158918-1e5bc460-05b5-4adf-b482-4df55fd6c035.png)
   
 # 주문 조회 페이지
   - 주문 완료된 경우 주문 상품 정보 저장
